@@ -18,6 +18,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    @stack('head')
 </head>
 <body>
     <div id="app">
@@ -38,10 +40,17 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+
+                        @can('ADMINISTRADOR')
+                            <li class="nav-item">
+                                <a class="nav-link" href="/formatos">Formatos</a>
+                            </li>
+                        @endcan
+
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">Iniciar sesion</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
@@ -58,7 +67,7 @@
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        Cerrar Sesion
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

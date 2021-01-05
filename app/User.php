@@ -45,7 +45,10 @@ class User extends Authenticatable
         $this->roles()->sync($role, false);
     }
 
-    public function tieneRol() {
-        return $this->roles->flatten()->pluck('nombre')->unique();
+    public function tieneRol($role) {
+        return $this->roles->flatten()->pluck('nombre')->unique()->contains($role);
     }
+
+
+
 }

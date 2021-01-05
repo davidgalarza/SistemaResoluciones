@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFormatosResolucionesTable extends Migration
+class AddTelefonoToEstudiantesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class CreateFormatosResolucionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('formatos_resoluciones', function (Blueprint $table) {
-            //
+        Schema::table('estudiantes', function (Blueprint $table) {
+            $table->string('telefono')->nullable();;
         });
     }
 
@@ -25,7 +25,7 @@ class CreateFormatosResolucionesTable extends Migration
      */
     public function down()
     {
-        Schema::table('formatos_resoluciones', function (Blueprint $table) {
+        Schema::table('resoluciones', function (Blueprint $table) {
             //
         });
     }
