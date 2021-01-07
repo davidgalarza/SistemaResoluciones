@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 class EstudiantesController extends Controller
 {
     
+    public function index() {
+        return view('estudiantes.index');
+    }
+
     public function obtener(Request $request)
     {
         $data = $request->validate([
@@ -20,5 +24,7 @@ class EstudiantesController extends Controller
 
         return json_encode($estudiante);
     }
+
+
 
 }

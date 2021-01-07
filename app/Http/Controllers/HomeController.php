@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+
+/**
+ * Controller estadisticas
+ */
+
 class HomeController extends Controller
 {
     /**

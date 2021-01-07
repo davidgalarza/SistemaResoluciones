@@ -28,6 +28,8 @@
                           </button>
                         </div>
                     @endif
+
+                    <a href="consejos/9/editar">Ejemplo enlace editar</a>
                     
 
                 </div>

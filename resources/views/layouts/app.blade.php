@@ -45,6 +45,21 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/formatos">Formatos</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/carreras">Carreras</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/usuarios">Usuarios</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/estudiantes">Estudiantes</a>
+                            </li>
+                        @endcan
+
+                        @can('ABOGADO')
+                            <li class="nav-item">
+                                <a class="nav-link" href="/consejos">Consejos</a>
+                            </li>
                         @endcan
 
                         <!-- Authentication Links -->
