@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Estudiante;
+use App\Carrera;
 
 use Illuminate\Http\Request;
 
@@ -20,9 +21,11 @@ class EstudiantesController extends Controller
 
 
         $estudiante = Estudiante::where('cedula', $data['cedula'])->firstOrFail();
-        
+        $carrera = Carrera::findOrFail($estudiante->id);
+        $datos = $estudiante->toArray();
+        $datos['carreraNombre'] = $carrera-> nombre;
 
-        return json_encode($estudiante);
+        return json_encode($datos) ;
     }
 
 
