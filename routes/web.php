@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 Auth::routes(['register' => false]);
 
 Route::get('/', 'HomeController@index')->name('home')->middleware('onlyAdmin', 'banned');
+Route::get('formatoPorCarrera/{id}', 'HomeController@formatosXid');
+Route::get('graficaBarras/{carrera}/{formato}', 'HomeController@obtenerDatosGrafica');
 Route::get('/formatos', 'FormatosController@index')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::get('/formatos/nuevo', 'FormatosController@create')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::post('/formatos/crear', 'FormatosController@store')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
