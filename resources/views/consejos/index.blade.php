@@ -28,10 +28,51 @@
                           </button>
                         </div>
                     @endif
-
-                    <a href="consejos/9/editar">Ejemplo enlace editar</a>
                     
+                    @foreach ($consejos as $consejo)
+                        <div class="border-bottom mt-3 pb-3">
+                            <div class="row">
 
+                                <div style="flex: 1" class="col-auto">
+                                    <div>
+                                        <h5 class="font-weight-bold">Consejo: {{(new Carbon\Carbon($consejo->fecha_consejo))->formatLocalized('%A %d de %B del %Y')}}</h5>
+                                    </div>
+                                    <p class=""><span class="font-weight-bold">Presidente: </span>{{$consejo->presidente}}</p>
+                                </div>
+
+                                @if ($consejo->estado == "ENPROCESO")
+                                    <div  style="flex: 0" class="col align-self-center">
+                                        <a href="/consejos/{{$consejo->id}}/editar" class="btn btn-warning font-weight-bold font-size-5"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square d-inline" viewBox="0 0 16 16">
+                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                        </svg></a>
+                                    </div>
+                                @else
+                                    <div  style="flex: 0" class="col align-self-center">
+                                        <a href="/consejos/{{$consejo->id}}/editar" class="btn btn-dark font-weight-bold font-size-5"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                                          </svg></a>
+                                    </div>
+                                @endif
+
+                            </div>
+                            
+                            <span class="badge badge-{{($consejo->estado == "ENPROCESO") ? "primary": ($consejo->estado == "CANCELADO" ? "danger" : "success")}}">{{$consejo->estado}}</span>
+                        </div>
+                    @endforeach
+
+                    @if (count($consejos) == 0)
+                        <div class="my-4" style="text-align: center">
+                            <i style="opacity: 0.7;font-size: 4em" class="fas fa-folder-open mb-2"></i>
+                            <p style="opacity: 0.7">Sin resultados</p>
+                        </div>
+                    @endif
+                    <div class="text-center mt-3">
+                        <div  class="d-inline-block">
+                            {{$consejos->appends(request()->except('page'))->links()}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

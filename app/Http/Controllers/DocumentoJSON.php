@@ -55,12 +55,15 @@ class DocumentoJSON extends Controller
                     $fieldInfo = array('label' => $fieldName, 'type' => $fieldType);
                     $fieldInfo[$fieldInfo['type'] == 'select' ? 'options' : 'values'] = array_map('trim', $fieldOpV);
 
-                } else{
+                } else if(count(explode('|', $fieldType)) > 1){
+                    $datos = explode('|', $fieldType);
+                    $fieldInfo = array('label' => $fieldName, 'type' => DocumentoJSON::parseType($datos[0]), 'default' => $datos[1]);
+                } else {
                     $fieldInfo = array('label' => $fieldName, 'type' => DocumentoJSON::parseType($fieldType));
                 }
 
                 $fieldInfo['varText'] = $var;
-               
+    
                 $formSchema[count($formSchema) - 1]['fields'][] = $fieldInfo; 
             }
         }

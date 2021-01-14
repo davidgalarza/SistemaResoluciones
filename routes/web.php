@@ -19,13 +19,18 @@ Route::get('/consejos', 'ConsejosController@index')->middleware('auth', 'role:AB
 Route::get('/consejos/nuevo', 'ConsejosController@create')->middleware('auth', 'role:ABOGADO', 'banned');
 Route::post('/consejos/crear', 'ConsejosController@store')->middleware('auth', 'role:ABOGADO', 'banned');
 Route::get('/consejos/{consejo}/editar', 'ConsejosController@editar')->middleware('auth', 'role:ABOGADO', 'banned');
+Route::put('/consejos/{consejo}', 'ConsejosController@update')->middleware('auth', 'role:ABOGADO', 'banned');
 Route::get('/estudiantes/obtener', 'EstudiantesController@obtener')->middleware('auth', 'role:ABOGADO', 'banned');
 Route::get('/resoluciones/{id_consejo}/{id_formato}/{id_estudiante}/formulario', 'ResolucionesController@formulario')->middleware('auth', 'role:ABOGADO', 'banned');
 Route::post('/resoluciones/anadir', 'ResolucionesController@anadir')->middleware('auth', 'role:ABOGADO', 'banned');
 Route::get('/resoluciones/{id}/descargar', 'ResolucionesController@descargar')->middleware('auth', 'role:ABOGADO', 'banned');
+Route::get('/resoluciones/{id}/editar', 'ResolucionesController@editar')->middleware('auth', 'role:ABOGADO', 'banned');
+Route::put('/resoluciones/{id}/actualizar', 'ResolucionesController@update')->middleware('auth', 'role:ABOGADO', 'banned');
+Route::delete('/resoluciones/{id}/eliminar', 'ResolucionesController@delete')->middleware('auth', 'role:ABOGADO', 'banned');
 Route::get('/carreras', 'CarrerasController@index')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::get('/carreras/nuevo', 'CarrerasController@create')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::get('/carreras/{id}/editar', 'CarrerasController@editar')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
-Route::resource('/usuarios', 'UsuariosController')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
-//Route::get('/usuarios/nuevo', 'UsuariosController@create')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
+Route::get('/usuarios/nuevo', 'UsuariosController@create')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::get('/estudiantes', 'EstudiantesController@index')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
+Route::post('import-list-excel','EstudiantesController@importExcel')->middleware('auth', 'role:ADMINISTRADOR', 'banned')->name('estudiantes.import.excel');
+

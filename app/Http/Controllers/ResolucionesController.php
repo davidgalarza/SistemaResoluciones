@@ -34,15 +34,43 @@ class ResolucionesController extends Controller
         $consejo = Consejo::findOrFail($idConsejo);
         $formato = Formato::findOrFail($idFormato);
         $estudiante = Estudiante::findOrFail($idEstudiante);
-
+        $carrera = Carrera::findOrFail($estudiante->carrera_id);
         return view('resoluciones.formulario', [
             'consejo'=> $consejo,
+            'carrera'=> $carrera, 
             'formato'=> $formato,
             'formSchema'=> json_decode($formato['form_schema'], true),
             'estudiante'=> $estudiante
         ]);
     }
 
+    public function editar(Request $request, $idResolucion){
+        
+        $resolucion = Resolucion::findOrFail($idResolucion);
+        $consejo = Consejo::findOrFail($resolucion->consejo_id);
+        $formato = Formato::findOrFail($resolucion->formato_id);
+        $estudiante = Estudiante::findOrFail($resolucion->estudiante_id);
+        $carrera = Carrera::findOrFail($estudiante->carrera_id);
+
+        return view('resoluciones.editar', [
+            'resolucion'=> $resolucion,
+            'formato' => $formato,
+            'carrera'=> $carrera, 
+            'consejo' => $consejo,
+            'estudiante' => $estudiante ,
+            'formSchema'=> json_decode($formato['form_schema'], true),
+            'respuestas'=> json_decode($resolucion['respuestas'], true),
+        ]);
+    }
+
+
+    public function delete(Request $request, $idResolucion){
+        
+        $resolucion = Resolucion::findOrFail($idResolucion);
+        $resolucion->delete();
+
+        return redirect('/consejos/'.$resolucion->consejo_id.'/editar')->with('success', 'Resolucion eliminada');
+    }
 
     public function anadir(Request $request){
         $data = $request->input();
@@ -59,6 +87,27 @@ class ResolucionesController extends Controller
 
 
         return back();
+    }
+
+    public function update(Request $request, $idResolucion){
+  
+        $data = $request->input();
+        unset($data['_token']);
+        $resolucion = Resolucion::findOrFail($idResolucion);
+        
+        $resolucion->update([
+            'usuario_id' => auth()->user()->id,
+            'estudiante_id' => $data['id_estudiante'],
+            'formato_id' => $data['id_formato'],
+            'respuestas' => json_encode($data),
+            'consejo_id' => $data['id_consejo'],
+            'nummero_resolucion' => 1,
+        ]);
+
+        $resolucion->save();
+
+
+        return redirect('/consejos/'.$data['id_consejo'].'/editar')->with('success', 'Resolucion actulizada');
     }
 
     public function descargar(Request $request, $id){
@@ -88,14 +137,7 @@ class ResolucionesController extends Controller
         $valoresRemplazar['Número Resolución'] = $resolucion->nummero_resolucion;
         $valoresRemplazar['Fecha Resolución'] = $fecha->format('d') . ' de ' . $mes . ' de ' . $fecha->format('Y');
         // Estudiante
-        $valoresRemplazar['Nombres Apellidos Estudiante'] = $estudiante->nombres . ' ' .  $estudiante->apellidos;
-        $valoresRemplazar['Cédula Estudiante'] = $estudiante->cedula;
-        $valoresRemplazar['Correo Personal Estudiante'] = $estudiante->correo;
-        $valoresRemplazar['Correo UTA Estudiante'] = $estudiante->correoUTA;
-        $valoresRemplazar['Carrera Estudiante'] = $carrera->nombre;
-        $valoresRemplazar['Telefono Estudiante'] = $estudiante->telefono;
-        $valoresRemplazar['Matricula Estudiante'] = $estudiante->matricula;
-        $valoresRemplazar['Folio Estudiante'] = $estudiante->folio;
+
         $valoresRemplazar['Periodo Académico'] = 'ENERO 2021 - JULIO 2021';
         $valoresRemplazar['Presidente Consejo'] = $consejo->presidente;
         
