@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 Auth::routes(['register' => false]);
 
 Route::get('/', 'HomeController@index')->name('home')->middleware('onlyAdmin', 'banned');
+Route::get('formatoPorCarrera/{id}', 'HomeController@formatosXid');
+Route::get('graficaBarras/{carrera}/{formato}', 'HomeController@obtenerDatosGrafica');
 Route::get('/formatos', 'FormatosController@index')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::get('/formatos/nuevo', 'FormatosController@create')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::post('/formatos/crear', 'FormatosController@store')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
@@ -28,7 +30,7 @@ Route::delete('/resoluciones/{id}/eliminar', 'ResolucionesController@delete')->m
 Route::get('/carreras', 'CarrerasController@index')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::get('/carreras/nuevo', 'CarrerasController@create')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::get('/carreras/{id}/editar', 'CarrerasController@editar')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
-Route::get('/usuarios', 'UsuariosController@index')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::get('/usuarios/nuevo', 'UsuariosController@create')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::get('/estudiantes', 'EstudiantesController@index')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::post('import-list-excel','EstudiantesController@importExcel')->middleware('auth', 'role:ADMINISTRADOR', 'banned')->name('estudiantes.import.excel');
+
