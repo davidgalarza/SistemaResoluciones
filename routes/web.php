@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
@@ -21,8 +22,9 @@ Route::get('/estudiantes/obtener', 'EstudiantesController@obtener')->middleware(
 Route::get('/resoluciones/{id_consejo}/{id_formato}/{id_estudiante}/formulario', 'ResolucionesController@formulario')->middleware('auth', 'role:ABOGADO', 'banned');
 Route::post('/resoluciones/anadir', 'ResolucionesController@anadir')->middleware('auth', 'role:ABOGADO', 'banned');
 Route::get('/resoluciones/{id}/descargar', 'ResolucionesController@descargar')->middleware('auth', 'role:ABOGADO', 'banned');
-Route::get('/carreras', 'CarrerasController@index')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
+//Route::get('/carreras', 'CarrerasController@index')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::get('/carreras/nuevo', 'CarrerasController@create')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
+Route::resource('/carreras', 'CarrerasController');
 Route::get('/carreras/{id}/editar', 'CarrerasController@editar')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::get('/usuarios', 'UsuariosController@index')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::get('/usuarios/nuevo', 'UsuariosController@create')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
