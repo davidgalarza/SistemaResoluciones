@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="float-left">{{$formato->nombre}}</h3>
-                    
+                    <span style="font-size: 1.1rem;" class="badge float-right badge-{{($formato->estado == "PUBLICO") ? "success": ($formato->estado == "ELIMINADO" ? "danger" : "secondary")}}">{{$formato->estado}}</span>
                 </div>
 
                 <div class="card-body">
@@ -155,7 +155,6 @@
                             <p class="alert alert-light" role="alert">{{$section['description']}}</p>
                         @endif  
                     @endif
-
                     
                     <div class="row">
                         @foreach ($section['fields'] as $field)
@@ -180,7 +179,7 @@
                                     @elseif($field['type'] == 'anio')
                                     {!! Form::text($field['label'], (isset($defaultValues[preg_replace('~[ .]~', '_', $field['label'])]) ? $defaultValues[preg_replace('~[ .]~', '_', $field['label'])]:null) ,  array('data-año'=>'true','class' => 'form-control ff')) !!}
                                     @else
-                                    {!! Form::{$field['type']}($field['label'], null,  array('class' => 'form-control')) !!}
+                                    {!! Form::{$field['type']}($field['label'], arra,  array('class' => 'form-control')) !!}
                                     @endif
                                 </div>
                             </div>

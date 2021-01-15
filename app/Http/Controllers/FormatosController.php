@@ -5,16 +5,32 @@ use App\Formato;
 use App\Carrera;
 use App\Http\Controllers\DocumentoJSON;
 use App\Rules\DocumentoValido;
+use App\Rules\WordRule;
 
 use Illuminate\Http\Request;
 
 class FormatosController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
 
-        $formatos = Formato::get();
+        $estado = $request->estado;
+        $qu = $request->q;
 
-        return view('formatos.index', ['formatos' => $formatos]);
+
+
+        $formatos = Formato::where(function($q) use ($qu){
+                $q->where('nombre','LIKE', '%'.$qu.'%')
+                ->orWhere('descripcion','LIKE', '%'.$qu.'%');
+            }
+        )->where('estado', 'LIKE', '%'.$estado.'%')->paginate(5);
+        $carreras = Carrera::get();
+
+        
+        return view('formatos.index', [
+            'formatos' => $formatos, 
+            'carreras' => $carreras->toArray(),
+            'q' => $qu,
+            'estado' => $estado]);
     }
 
     public function create() {
@@ -46,13 +62,14 @@ class FormatosController extends Controller
     }
 
     public function update(Request $request, $id){
+        $formato = Formato::findOrFail($id);
         $data = $request->validate([
             'nombre' => ['required', 'string', 'max:50'],
             'descripcion' => ['required', 'string', 'max:100'],
-            'estado'=> ['required','in:BORRADOR,PUBLICO,ELIMINADO']
-        ]);
+            'estado'=> ['required', $formato->form_schema == null ? 'in:BORRADOR,ELIMINADO' : 'in:BORRADOR,ELIMINADO,PUBLICO']
+        ], ['estado.in' => 'Primero subir la plantilla']);
 
-        $formato = Formato::findOrFail($id);
+        
         $formato->nombre = $data['nombre'];
         $formato->descripcion = $data['descripcion'];
         $formato->estado = $data['estado'];
@@ -82,7 +99,7 @@ class FormatosController extends Controller
     {
 
         $request->validate([
-            'template_file' => ['required','mimes:doc,docx,dotm',' max:2048', new DocumentoValido],
+            'template_file' => ['required','file',new WordRule($request->file('template_file')),'max:5000', new DocumentoValido],
         ]);
   
         $fileName = time().'.'.$request->template_file->extension();  
