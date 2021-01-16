@@ -179,7 +179,7 @@
                                     @elseif($field['type'] == 'anio')
                                     {!! Form::text($field['label'], (isset($defaultValues[preg_replace('~[ .]~', '_', $field['label'])]) ? $defaultValues[preg_replace('~[ .]~', '_', $field['label'])]:null) ,  array('data-año'=>'true','class' => 'form-control ff')) !!}
                                     @else
-                                    {!! Form::{$field['type']}($field['label'], arra,  array('class' => 'form-control')) !!}
+                                    {!! Form::{$field['type']}($field['label'], null,  array('class' => 'form-control')) !!}
                                     @endif
                                 </div>
                             </div>
