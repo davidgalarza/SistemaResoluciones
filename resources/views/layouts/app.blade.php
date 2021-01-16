@@ -19,14 +19,54 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    <style>
+        .nav-item{
+            color: white !important;
+            font-weight: bold ;
+            opacity: 1 !important;
+        }
+        .nav-link{
+            color: white !important;
+            font-weight: bold ;
+            font-size: 1rem;
+            opacity: 0.7 ;
+        }
+        .nombre_sistema{
+            border-left: solid 1.5px rgba(255, 255, 255, 0.8);
+            padding-left: 1rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            margin-left: 1rem;
+        }
+        .active{
+            opacity: 1;
+            font-weight: bolder;
+        }
+
+        .active::after{
+            content: '';
+            text-align: center;
+            width: 100%;
+            height: 2px;
+            margin: auto;
+            background-color: white;
+            border-radius: 5px;
+            display: block;
+        }
+
+
+    </style>
+
     @stack('head')
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav style="background-color: #781617 !important" class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    <img style="max-width: 3rem" src="https://upload.wikimedia.org/wikipedia/commons/9/93/Escudo_de_la_Universidad_T%C3%A9cnica_de_Ambato.png" class="logo" alt="" srcset="">
+      
+                    <span class="nombre_sistema"> {{ config('app.name', 'Laravel') }}<span>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -42,23 +82,23 @@
                     <ul class="navbar-nav ml-auto">
 
                         @can('ADMINISTRADOR')
-                            <li class="nav-item">
-                                <a class="nav-link" href="/formatos">Formatos</a>
+                            <li class="nav-item ">
+                                <a class="nav-link {{ (request()->is('formatos')) ? 'active' : '' }}" href="/formatos">Formatos</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/carreras">Carreras</a>
+                            <li class="nav-item ">
+                                <a class="nav-link {{ (request()->is('carreras')) ? 'active' : '' }}" href="/carreras">Carreras</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/usuarios">Usuarios</a>
+                            <li class="nav-item ">
+                                <a class="nav-link {{ (request()->is('usuarios')) ? 'active' : '' }}" href="/usuarios">Usuarios</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/estudiantes">Estudiantes</a>
+                            <li class="nav-item ">
+                                <a class="nav-link {{ (request()->is('estudiantes')) ? 'active' : '' }}" href="/estudiantes">Estudiantes</a>
                             </li>
                         @endcan
 
                         @can('ABOGADO')
-                            <li class="nav-item">
-                                <a class="nav-link" href="/consejos">Consejos</a>
+                            <li class="nav-item ">
+                                <a class="nav-link {{ (request()->is('consejos')) ? 'active' : '' }}" href="/consejos">Consejos</a>
                             </li>
                         @endcan
 
@@ -69,7 +109,7 @@
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link active" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else

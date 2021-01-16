@@ -40,7 +40,8 @@ class DocumentoValido implements Rule
             'Folio Estudiante',
             'Anio Resolución',
             'Presidente Consejo',
-            'Número Resolución'
+            'Número Resolución',
+            'Tipo Sesión'
         ];
         
         $phpWord = new \PhpOffice\PhpWord\TemplateProcessor($value->getPathName());

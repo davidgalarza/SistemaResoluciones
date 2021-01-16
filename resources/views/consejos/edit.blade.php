@@ -28,7 +28,6 @@
                           </button>
                         </div>
                     @endif
-
                     <form method="POST" action="{{  url('/consejos/'.$consejo->id) }}" enctype="multipart/form-data">
                         @csrf
                         {{ method_field('PUT') }}
@@ -45,7 +44,7 @@
                                         </span>
                                     @enderror    
                                 </div>
-                                <div class="col-md-10">
+                                <div class="col-md-6">
                                     <label for="estado" class="col-form-label text-md-right">Estadon del consejo</label>
                                     <select id="estado" class="form-control @error('estado') is-invalid @enderror" name="estado" value="{{ old('estado') ?? $consejo->estado }}" required >
                                         @if ($consejo->estado == 'ENPROCESO')
@@ -55,11 +54,27 @@
                                         <option {{ (old('estado') ?? $consejo->estado) == "CANCELADO" ? 'selected' : '' }} value="CANCELADO">Cancelado</option>
                                     </select>
                                 </div>
-                                <div class="col-md-2">
-                                    <label style="opacity: 0" for="presidente" class="col-form-label text-md-right">P</label>
-                                    <button type="submit" class="btn btn-primary  ">
+                                <div class="col-md-6">
+                                    <label for="tipo" class=" col-form-label text-md-right">Tipo de Sesion</label>
+                                    <select id="tipo" type="text" class="form-control  @error('tipo') is-invalid @enderror" name="tipo" value="{{ old('tipo') }}" required autocomplete="tipo">
+                                        <option disabled selected>Seleccionar...</option>
+                                        
+                                        <option value="Ordinaria" {{ old('tipo') == 'Ordinaria' || $consejo->tipo == 'Ordinaria' ? 'selected' : ''}}>Ordinaria</option>
+                                        <option value="Extraordinaria" {{ old('tipo') == 'Extraordinaria' || $consejo->tipo == 'EXTRAORDINARIA' ? 'selected' : ''}}>Extraordinaria</option>
+
+                                    </select>
+                                
+                                    @error('tipo')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror    
+                                </div>
+                                <div class="col-12 text-end" style="text-align: end;">
+                                    <label style="opacity: 0"  for="presidente" class="col-form-label d-block text-md-right">P</label>
+                                    <button type="submit" class="btn btn-primary f-end ">
                                         Actualizar
-                                       </button>
+                                    </button>
                                 </div>
                             @else
 
@@ -115,11 +130,12 @@
                         <tbody>
                             @foreach ($resoluciones as $resolucion)
                                 <tr>
-                                    <th class="text-center" scope="row">{{$resolucion->nummero_resolucion}}</th>
-                                    <td>{{\App\Formato::findOrFail($resolucion->formato_id)->nombre}}</td>
                                     @php
                                         $estudiante = \App\Estudiante::findOrFail($resolucion->estudiante_id);
                                     @endphp
+                                    <th class="text-center" scope="row">{{$resolucion->nummero_resolucion}}</th>
+                                    <td>{{\App\Formato::findOrFail($resolucion->formato_id)->nombre}}</td>
+                                    
                                     <td>{{ $estudiante->nombres}}<br/>{{ $estudiante->apellidos}}</td>
                                     <td>{{\App\Carrera::findOrFail($estudiante->carrera_id)->nombre}}</td>
                                     <td><a href="/resoluciones/{{$resolucion->id}}/descargar" class="btn btn-warning">
@@ -165,9 +181,6 @@
                                     {{$resoluciones->appends(request()->except('page'))->links()}}
                                 </div>
                             </div>
-                    
-                    
-
                 </div>
             </div>
         </div>

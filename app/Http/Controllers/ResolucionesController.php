@@ -26,7 +26,8 @@ class ResolucionesController extends Controller
         'Folio Estudiante',
         'Anio Resolución',
         'Presidente Consejo',
-        'Número Resolución'
+        'Número Resolución',
+        'Tipo Sesión'
     ];
 
     public function formulario(Request $request, $idConsejo, $idFormato, $idEstudiante){
@@ -67,6 +68,11 @@ class ResolucionesController extends Controller
     public function delete(Request $request, $idResolucion){
         
         $resolucion = Resolucion::findOrFail($idResolucion);
+        $resolucionesPosteriores = Resolucion::where('created_at', '>', $resolucion->created_at)->get();
+        foreach ($resolucionesPosteriores as  $rp) {
+            $rp->nummero_resolucion = $rp->nummero_resolucion - 1;
+            $rp->save();
+        }
         $resolucion->delete();
 
         return redirect('/consejos/'.$resolucion->consejo_id.'/editar')->with('success', 'Resolucion eliminada');
@@ -76,13 +82,20 @@ class ResolucionesController extends Controller
         $data = $request->input();
         unset($data['_token']);
 
+        
+        $ultimaResolucion = Resolucion::whereNotNull('nummero_resolucion')->whereRaw('year(`created_at`) = ?', array(date('Y')))->latest('created_at')->first();
+        if($ultimaResolucion != null) {
+            $ultimoNumeroResolucion = $ultimaResolucion->nummero_resolucion; 
+        } else {
+            $ultimoNumeroResolucion = 0;
+        }
         $resolucion = Resolucion::create([
             'usuario_id' => auth()->user()->id,
             'estudiante_id' => $data['id_estudiante'],
             'formato_id' => $data['id_formato'],
             'respuestas' => json_encode($data),
             'consejo_id' => $data['id_consejo'],
-            'nummero_resolucion' => 1,
+            'nummero_resolucion' => $ultimoNumeroResolucion + 1
         ]);
 
 
@@ -101,7 +114,7 @@ class ResolucionesController extends Controller
             'formato_id' => $data['id_formato'],
             'respuestas' => json_encode($data),
             'consejo_id' => $data['id_consejo'],
-            'nummero_resolucion' => 1,
+            'nummero_resolucion' => null,
         ]);
 
         $resolucion->save();
@@ -133,9 +146,10 @@ class ResolucionesController extends Controller
         $fecha = Carbon::parse($resolucion->created_at)->timezone('America/Bogota');
         $mes = $meses[($fecha->format('n')) - 1];
 
-
+        $valoresRemplazar['Tipo Sesión'] = $consejo->tipo;
         $valoresRemplazar['Número Resolución'] = $resolucion->nummero_resolucion;
         $valoresRemplazar['Fecha Resolución'] = $fecha->format('d') . ' de ' . $mes . ' de ' . $fecha->format('Y');
+        $valoresRemplazar['Anio Resolución'] = $fecha->format('Y');
         // Estudiante
 
         $valoresRemplazar['Periodo Académico'] = 'ENERO 2021 - JULIO 2021';
@@ -145,7 +159,6 @@ class ResolucionesController extends Controller
 
 
         foreach (json_decode($formato['form_schema'], true) as $section){
-
 
             $valoresRemplazar[array_key_exists('varText', $section) ? $section['varText'] :'['.$section['title'].']'] = $section['title'];
 
@@ -160,7 +173,13 @@ class ResolucionesController extends Controller
                         }
                     }
                 } else if(array_key_exists(preg_replace('~[ .]~', '_', $field['label']),$respuestas )){
-                    $valoresRemplazar[$field['varText']] = $respuestas[preg_replace('~[ .]~', '_', $field['label'])];
+                    if($field['type'] != 'date' ){
+                        $valoresRemplazar[$field['varText']] = $respuestas[preg_replace('~[ .]~', '_', $field['label'])];
+                    } else {
+                        $fecha2 = Carbon::parse($respuestas[preg_replace('~[ .]~', '_', $field['label'])])->timezone('America/Bogota');
+                        $mes2 = $meses[($fecha2->format('n')) - 1];
+                        $valoresRemplazar[$field['varText']] = $mes2. ' ' . $fecha2->format('d'). ', ' . $fecha2->format('Y'); ;
+                    }
                 } else{
                     $valoresRemplazar[$field['varText']] = '';
                 }
