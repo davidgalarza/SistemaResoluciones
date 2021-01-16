@@ -28,6 +28,7 @@ class ConsejosController extends Controller
         $data = $request->validate([
             'fecha_consejo' => ['required', 'date'],
             'presidente' => ['required', 'string', 'max:50'],
+            'tipo' => ['required', 'string', 'in:Ordinaria,Extraordinaria']
         ]);
 
 
@@ -45,14 +46,14 @@ class ConsejosController extends Controller
         $data = $request->validate([
             'presidente' => ['required', 'string', 'max:50'],
             'estado' => ['required', $consejo->estado == 'ENPROCESO' ? 'in:ENPROCESO,FINALIZADO,CANCELADO': 'in:FINALIZADO,CANCELADO'],
+            'tipo' => ['required', 'string', 'in:Ordinaria,Extraordinaria']
         ]);
 
        
-        if($consejo->estado == 'ENPROCESO'){
-            
-          
+        if($consejo->estado == 'ENPROCESO') {
             $consejo->presidente = $data['presidente'];
             $consejo->estado = $data['estado'];
+            $consejo->tipo = $data['tipo'];
             $consejo->save();
             return redirect('/consejos/'.$consejo->id.'/editar')->with('success', 'Consejo Actualizado.');
         } else{
@@ -74,6 +75,7 @@ class ConsejosController extends Controller
         $resoluciones= Resolucion::where('consejo_id', $id)->where('respuestas', 'like', '%' . $q . '%')
         ->orderBy('created_at', 'desc')->paginate(7);
 
+        
         return view('consejos.edit', [
             'consejo' => $consejo,
             'formatos' => $formatos,

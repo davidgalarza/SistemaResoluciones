@@ -15,7 +15,7 @@ class CreateResolucionesTable extends Migration
     {
         Schema::create('resoluciones', function (Blueprint $table) {
             $table->id();
-            $table->integer('nummero_resolucion');
+            $table->integer('nummero_resolucion')->nullable();
 
             $table->unsignedBigInteger('estudiante_id');
             $table->unsignedBigInteger('consejo_id');
