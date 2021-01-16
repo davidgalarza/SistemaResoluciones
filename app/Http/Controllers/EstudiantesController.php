@@ -23,9 +23,9 @@ class EstudiantesController extends Controller
 
 
         $estudiante = Estudiante::where('cedula', $data['cedula'])->firstOrFail();
-        $carrera = Carrera::findOrFail($estudiante->id);
+        $carrera = Carrera::findOrFail($estudiante->carrera_id);
         $datos = $estudiante->toArray();
-        $datos['carreraNombre'] = $carrera-> nombre;
+        $datos['carreraNombre'] = $carrera->nombre;
 
         return json_encode($datos) ;
     }

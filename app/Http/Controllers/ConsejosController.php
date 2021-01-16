@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Consejo;
 use App\Formato;
 use App\Resolucion;
+use App\Estudiante;
 use Carbon\Carbon;
+use App\Notifications\ResolucionCreada;
 
 class ConsejosController extends Controller
 {
@@ -55,6 +57,19 @@ class ConsejosController extends Controller
             $consejo->estado = $data['estado'];
             $consejo->tipo = $data['tipo'];
             $consejo->save();
+
+            if($data['estado'] == 'FINALIZADO') {
+
+                $resoluciones = Resolucion::where('consejo_id', '=', $consejo->id)->get();
+
+                foreach ($resoluciones as $resolucion) {
+
+                    $estudiante = Estudiante::find($resolucion->estudiante_id);
+
+                    \Notification::route('mail', $estudiante->correoUTA)->notify((new ResolucionCreada($resolucion)));
+                }
+                
+            }
             return redirect('/consejos/'.$consejo->id.'/editar')->with('success', 'Consejo Actualizado.');
         } else{
             return redirect('/consejos/'.$consejo->id.'/editar')->with('error', 'No se puede modificar este consejo');
