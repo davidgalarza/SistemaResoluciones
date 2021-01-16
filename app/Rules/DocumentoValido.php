@@ -40,7 +40,8 @@ class DocumentoValido implements Rule
             'Folio Estudiante',
             'Anio Resolución',
             'Presidente Consejo',
-            'Número Resolución'
+            'Número Resolución',
+            'Tipo Sesión'
         ];
         
         $phpWord = new \PhpOffice\PhpWord\TemplateProcessor($value->getPathName());
@@ -55,7 +56,7 @@ class DocumentoValido implements Rule
             if(count(explode(',', $varia)) > 1){
                 $sections = explode(',', $varia,2);
                 $type = trim($sections[1]);
-                $type = trim(explode(';', $type)[0]);
+                $type = trim(explode('|', explode(';', $type)[0])[0]);
                 if(!in_array($type, $validTypes)){
                     $this->invalid[] = 'Tipo <span style="color: #007bff">'.$type.'</span> no valido en ${'.$varia.'}';
                 }
@@ -68,7 +69,14 @@ class DocumentoValido implements Rule
                     } else {
                         $this->invalid[] = 'Tipo '.$type.' requiere opciones en ${'.$varia.'}';
                     }
+                } else if(count(explode('|', $sections[1]) ) >1){
+                    $opS =  explode('|', $sections[1]);
+                    if(!isset($opS[1])){
+                        $this->invalid[] = 'Tipo '.$type.' requiere valor por defecto en ${'.$varia.'}';
+                    }
+         
                 }
+
             } else {
                 $constName = trim($varia);
                 if(!in_array($constName, $validConsts)){
@@ -78,7 +86,7 @@ class DocumentoValido implements Rule
             
         }
 
-        return count($this->invalid) ==0;
+        return count($this->invalid) == 0;
     }
 
 

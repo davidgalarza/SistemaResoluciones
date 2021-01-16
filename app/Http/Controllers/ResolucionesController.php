@@ -26,7 +26,8 @@ class ResolucionesController extends Controller
         'Folio Estudiante',
         'Anio Resolución',
         'Presidente Consejo',
-        'Número Resolución'
+        'Número Resolución',
+        'Tipo Sesión'
     ];
 
     public function formulario(Request $request, $idConsejo, $idFormato, $idEstudiante){
@@ -34,31 +35,92 @@ class ResolucionesController extends Controller
         $consejo = Consejo::findOrFail($idConsejo);
         $formato = Formato::findOrFail($idFormato);
         $estudiante = Estudiante::findOrFail($idEstudiante);
-
+        $carrera = Carrera::findOrFail($estudiante->carrera_id);
         return view('resoluciones.formulario', [
             'consejo'=> $consejo,
+            'carrera'=> $carrera, 
             'formato'=> $formato,
             'formSchema'=> json_decode($formato['form_schema'], true),
             'estudiante'=> $estudiante
         ]);
     }
 
+    public function editar(Request $request, $idResolucion){
+        
+        $resolucion = Resolucion::findOrFail($idResolucion);
+        $consejo = Consejo::findOrFail($resolucion->consejo_id);
+        $formato = Formato::findOrFail($resolucion->formato_id);
+        $estudiante = Estudiante::findOrFail($resolucion->estudiante_id);
+        $carrera = Carrera::findOrFail($estudiante->carrera_id);
+
+        return view('resoluciones.editar', [
+            'resolucion'=> $resolucion,
+            'formato' => $formato,
+            'carrera'=> $carrera, 
+            'consejo' => $consejo,
+            'estudiante' => $estudiante ,
+            'formSchema'=> json_decode($formato['form_schema'], true),
+            'respuestas'=> json_decode($resolucion['respuestas'], true),
+        ]);
+    }
+
+
+    public function delete(Request $request, $idResolucion){
+        
+        $resolucion = Resolucion::findOrFail($idResolucion);
+        $resolucionesPosteriores = Resolucion::where('created_at', '>', $resolucion->created_at)->get();
+        foreach ($resolucionesPosteriores as  $rp) {
+            $rp->nummero_resolucion = $rp->nummero_resolucion - 1;
+            $rp->save();
+        }
+        $resolucion->delete();
+
+        return redirect('/consejos/'.$resolucion->consejo_id.'/editar')->with('success', 'Resolucion eliminada');
+    }
 
     public function anadir(Request $request){
         $data = $request->input();
         unset($data['_token']);
 
+        
+        $ultimaResolucion = Resolucion::whereNotNull('nummero_resolucion')->whereRaw('year(`created_at`) = ?', array(date('Y')))->latest('created_at')->first();
+        if($ultimaResolucion != null) {
+            $ultimoNumeroResolucion = $ultimaResolucion->nummero_resolucion; 
+        } else {
+            $ultimoNumeroResolucion = 0;
+        }
         $resolucion = Resolucion::create([
             'usuario_id' => auth()->user()->id,
             'estudiante_id' => $data['id_estudiante'],
             'formato_id' => $data['id_formato'],
             'respuestas' => json_encode($data),
             'consejo_id' => $data['id_consejo'],
-            'nummero_resolucion' => 1,
+            'nummero_resolucion' => $ultimoNumeroResolucion + 1
         ]);
 
 
         return back();
+    }
+
+    public function update(Request $request, $idResolucion){
+  
+        $data = $request->input();
+        unset($data['_token']);
+        $resolucion = Resolucion::findOrFail($idResolucion);
+        
+        $resolucion->update([
+            'usuario_id' => auth()->user()->id,
+            'estudiante_id' => $data['id_estudiante'],
+            'formato_id' => $data['id_formato'],
+            'respuestas' => json_encode($data),
+            'consejo_id' => $data['id_consejo'],
+            'nummero_resolucion' => null,
+        ]);
+
+        $resolucion->save();
+
+
+        return redirect('/consejos/'.$data['id_consejo'].'/editar')->with('success', 'Resolucion actulizada');
     }
 
     public function descargar(Request $request, $id){
@@ -84,18 +146,12 @@ class ResolucionesController extends Controller
         $fecha = Carbon::parse($resolucion->created_at)->timezone('America/Bogota');
         $mes = $meses[($fecha->format('n')) - 1];
 
-
+        $valoresRemplazar['Tipo Sesión'] = $consejo->tipo;
         $valoresRemplazar['Número Resolución'] = $resolucion->nummero_resolucion;
         $valoresRemplazar['Fecha Resolución'] = $fecha->format('d') . ' de ' . $mes . ' de ' . $fecha->format('Y');
+        $valoresRemplazar['Anio Resolución'] = $fecha->format('Y');
         // Estudiante
-        $valoresRemplazar['Nombres Apellidos Estudiante'] = $estudiante->nombres . ' ' .  $estudiante->apellidos;
-        $valoresRemplazar['Cédula Estudiante'] = $estudiante->cedula;
-        $valoresRemplazar['Correo Personal Estudiante'] = $estudiante->correo;
-        $valoresRemplazar['Correo UTA Estudiante'] = $estudiante->correoUTA;
-        $valoresRemplazar['Carrera Estudiante'] = $carrera->nombre;
-        $valoresRemplazar['Telefono Estudiante'] = $estudiante->telefono;
-        $valoresRemplazar['Matricula Estudiante'] = $estudiante->matricula;
-        $valoresRemplazar['Folio Estudiante'] = $estudiante->folio;
+
         $valoresRemplazar['Periodo Académico'] = 'ENERO 2021 - JULIO 2021';
         $valoresRemplazar['Presidente Consejo'] = $consejo->presidente;
         
@@ -103,7 +159,6 @@ class ResolucionesController extends Controller
 
 
         foreach (json_decode($formato['form_schema'], true) as $section){
-
 
             $valoresRemplazar[array_key_exists('varText', $section) ? $section['varText'] :'['.$section['title'].']'] = $section['title'];
 
@@ -118,7 +173,13 @@ class ResolucionesController extends Controller
                         }
                     }
                 } else if(array_key_exists(preg_replace('~[ .]~', '_', $field['label']),$respuestas )){
-                    $valoresRemplazar[$field['varText']] = $respuestas[preg_replace('~[ .]~', '_', $field['label'])];
+                    if($field['type'] != 'date' ){
+                        $valoresRemplazar[$field['varText']] = $respuestas[preg_replace('~[ .]~', '_', $field['label'])];
+                    } else {
+                        $fecha2 = Carbon::parse($respuestas[preg_replace('~[ .]~', '_', $field['label'])])->timezone('America/Bogota');
+                        $mes2 = $meses[($fecha2->format('n')) - 1];
+                        $valoresRemplazar[$field['varText']] = $mes2. ' ' . $fecha2->format('d'). ', ' . $fecha2->format('Y'); ;
+                    }
                 } else{
                     $valoresRemplazar[$field['varText']] = '';
                 }

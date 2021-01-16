@@ -36,7 +36,7 @@
 
                         <label for="carrera_id" class="text-left">Carrera del formato</label>
                         <select id="carrera_id" type="text" class="form-control @error('carrera_id') is-invalid @enderror" name="carrera_id" value="{{ old('carrera_id') }}" required autocomplete="carrera_id">
-                            <option>Seleccionar</option>
+                            <option>Seleccionar...</option>
                             @foreach ($carreras as $carrera)
                                 <option value="{{$carrera->id}}" {{ old('carrera_id') == $carrera->id  ? 'selected' : ''}}>{{$carrera->nombre}}</option>
                             @endforeach

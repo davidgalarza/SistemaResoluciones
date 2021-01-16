@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^2.5",
         "laravelcollective/html": "^6.2",
+        "maatwebsite/excel": "^3.1",
         "nesbot/carbon": "^2.43",
         "phpoffice/phpword": "^0.17.0"
     },

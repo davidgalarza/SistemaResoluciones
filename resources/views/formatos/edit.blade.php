@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="float-left">{{$formato->nombre}}</h3>
-                    
+                    <span style="font-size: 1.1rem;" class="badge float-right badge-{{($formato->estado == "PUBLICO") ? "success": ($formato->estado == "ELIMINADO" ? "danger" : "secondary")}}">{{$formato->estado}}</span>
                 </div>
 
                 <div class="card-body">
@@ -155,7 +155,6 @@
                             <p class="alert alert-light" role="alert">{{$section['description']}}</p>
                         @endif  
                     @endif
-
                     
                     <div class="row">
                         @foreach ($section['fields'] as $field)

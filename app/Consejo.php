@@ -10,6 +10,7 @@ class Consejo extends Model
     protected $fillable = [
         'fecha_consejo',
         'presidente',
+        'tipo',
         'estado'
     ];
 }
