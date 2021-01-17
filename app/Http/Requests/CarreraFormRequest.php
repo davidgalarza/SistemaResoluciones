@@ -25,7 +25,23 @@ class CarreraFormRequest extends FormRequest
     {
         return [
             //
-            'nombre' => 'required|unique:carreras|max:100',
+            'nombre' => 'required|min:5|max:50',
+            //'nombre' => 'required',
+        ];
+    }
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            //
+            'nombre.unique' => 'El nombre de la carrera ya está en uso.',
+            'nombre.required' => 'El nombre de la carrera no puede estar vacío.',
+            'nombre.min' => 'El nombre de la carrera debe tener 5 caracteres mínimo.',
+            'nombre.max' => 'El nombre de la carrera debe tener 50 caracteres máximo.',
             //'nombre' => 'required',
         ];
     }
