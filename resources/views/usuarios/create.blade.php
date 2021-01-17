@@ -47,7 +47,9 @@
                             <input type="password" class="form-control" name="password" placeholder="Escriba la contraseña">
                           </div>
                         <button type="submit" class="btn btn-primary">Registrar</button>
-                        <button type="reset" class="btn btn-danger">Cancelar</button>
+                        <a href="/usuarios">
+                            <button type="button" class="btn btn-danger">Cancelar</button>
+                            </a>
                       </form>
                     </div>
                 </div>
