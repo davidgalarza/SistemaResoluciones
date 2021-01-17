@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header">
                     <h3 class="float-left">Usuarios</h3>
@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="card-body">
-
+                <div class="table-responsive">
                 <table class="table table-hover">
                 <thead>
                     <tr>
@@ -70,7 +70,7 @@
                     
                 </tbody>
                 </table>
-
+            </div>
                 </div>
             </div>
         </div>
