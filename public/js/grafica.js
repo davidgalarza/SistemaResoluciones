@@ -1,5 +1,6 @@
 $(document).ready(function(){
-
+    var gra = document.getElementById("cargador"); 
+    gra.style.display = "none";
     cargarFormatosInicio();
     graficarBarras();
     $("#Carreras").change(function(){
@@ -41,7 +42,8 @@ function graficarBarras(){
     var nombreCarrera = combo.options[combo.selectedIndex].text;
     var combo2 = document.getElementById("Formatos");
     var nombreFormatoA = combo2.options[combo2.selectedIndex].text;
-
+    var gra = document.getElementById("cargador"); 
+    gra.style.display = "block";
     $.get('graficaBarras/'+nombreCarrera+'/'+nombreFormatoA, function(datosGrafica){
         console.log(datosGrafica.length);
         if(datosGrafica.length>0){
@@ -77,7 +79,8 @@ function renderGrafico( data2){
       var data = new google.visualization.arrayToDataTable(data2);
 
       var options = {
-        width: 700,
+        width: '100%',
+        height: '500px',
         legend: { position: 'none' },
         chart: {
           //title: 'Reportes',

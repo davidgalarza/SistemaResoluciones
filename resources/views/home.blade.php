@@ -39,16 +39,23 @@
                             </div>
                         </div>
                         
-                        <div style="position: relative; position: absolute;top:50%; left: 50%;margin-top: -100px; margin-left: -100px;">
+                        <div style="padding-top: 50px;">
+                        <div style="display: flex; justify-content: center; ">
                             <div id="cargador" style="position: absolute; " class="loader" >Loading...</div>
                         </div>
 
-                        <div id="top_x_div" style="width: auto; height: 600px; position: relative; margin-top: 70px;"></div>
+                        <div id="chart_wrap">
+                            <div id="top_x_div"></div>
+                        </div>
+                       
 
                         <div id="smsAlerta1" style="margin-top: 10px;"> 
                             <div class="alert alert-danger" style="text-align: center;">No existen datos para graficar</div>
 
                         </div>
+
+                        </div>
+                        
                        
                         @else    
                         <div id="smsAlerta2" style="margin-top: 10px; width: 100%;"> 
