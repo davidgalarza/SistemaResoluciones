@@ -23,7 +23,7 @@ class CarrerasController extends Controller
             $carreras = Carrera::where('nombre', 'LIKE', '%' . $query . '%')
             ->where('eliminado','=',0)
             ->orderBy('id','asc')
-            ->get();
+            ->paginate(5);
             return view('carreras.index', ['carreras' => $carreras, 'search' => $query]);
         }
 
@@ -51,7 +51,7 @@ class CarrerasController extends Controller
            if ($eliminados[0]->eliminado == '1' && count($eliminados)==1) {
             $carrera->nombre = request('nombre');
             $carrera->save();
-            return redirect('/carreras');
+            return redirect('/carreras')->with('success', 'Carrera creada.');
         } else if ($eliminados[0]->eliminado == '0' || count($eliminados)>1) {
 
             $messages = [
@@ -71,7 +71,7 @@ class CarrerasController extends Controller
             $carrera->nombre = request('nombre');
             $carrera->save();    
             //print_r($eliminados);
-            return redirect('/carreras');  
+            return redirect('/carreras')->with('success', 'Carrera creada.'); 
         } 
         
         // $carrera->nombre = request('nombre');
