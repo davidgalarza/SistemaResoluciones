@@ -29,7 +29,7 @@
                         <input type="text" name="Telefono Estudiante" value="{{$estudiante->telefono}}" hidden>
                         <input type="text" name="Matricula Estudiante" value="{{$estudiante->matricula}}" hidden>
                         <input type="text" name="Folio Estudiante" value="{{$estudiante->folio}}" hidden>
-                        <input type="text" name="Periodo Académico" value="{{$estudiante->folio}}" hidden>
+                        <input type="text" name="Periodo Académico" value="{{$periodo}}" hidden>
 
                         @foreach ($formSchema as $section)
                             <div id="{{$section['title']}}" class="{{$section['title']!='SECCIÓN 1' ? 'form-section' :''}}">
@@ -73,7 +73,7 @@
                                                 @elseif($field['type'] == 'año')
                                                 {!! Form::number($field['label'], (isset($respuestas[preg_replace('~[ .]~', '_', $field['label'])]) ? $respuestas[preg_replace('~[ .]~', '_', $field['label'])]:null) ,  array('data-año'=>'true','class' => 'form-control ff', 'min' => 1950, 'max' => 2070, 'required' => 'true')) !!}
                                                 @else
-                                                {!! Form::{$field['type'] == 'date' ? 'date' : $field['type']}($field['label'], (isset($respuestas[preg_replace('~[ .]~', '_', $field['label'])]) ? $respuestas[preg_replace('~[ .]~', '_', $field['label'])]:null) ,  array('required' => 'true','class' => 'form-control ff'.($field['type'] == 'date' ? ' datefield' : ''))) !!}
+                                                {!! Form::{$field['type'] == 'date' ? 'text' : $field['type']}($field['label'], (isset($respuestas[preg_replace('~[ .]~', '_', $field['label'])]) ? $respuestas[preg_replace('~[ .]~', '_', $field['label'])]:null) ,  array('required' => 'true','class' => 'form-control ff'.($field['type'] == 'date' ? ' datefield' : ''))) !!}
                                                 @endif
                                             </div>
                                         </div>
@@ -82,7 +82,7 @@
                             </div>
                         @endforeach
                     
-                        <button type="submit" class="btn btn-primary mt-3 float-right">
+                        <button type="submit" id="boton_enviar" class="btn btn-primary mt-3 float-right">
                             Actualizar Resolucion
                         </button>
                     
@@ -95,3 +95,8 @@
 
 @endsection
 
+@push('head')
+
+    <script src="{{ asset('js/new_resolucion.js')}}"></script>
+    
+@endpush

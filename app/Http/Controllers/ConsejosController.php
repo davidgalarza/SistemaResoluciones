@@ -13,12 +13,14 @@ use App\Notifications\ResolucionCreada;
 class ConsejosController extends Controller
 {
     public function index() {
-        $consejos = Consejo::paginate(5);
+        $consejos = Consejo::orderBy('created_at', 'desc')->paginate(5);
+        $puedeCrearConsejo = Consejo::where('estado', '=', 'ENPROCESO')->count() === 0;
         Carbon::setUTF8(true);
         Carbon::setLocale(config('app.locale'));
         setlocale(LC_ALL, 'es_MX', 'es', 'ES', 'es_MX.utf8');
         return view('consejos.index', [
             'consejos' => $consejos,
+            'puedeCrearConsejo' => $puedeCrearConsejo
         ]);
     }
 
@@ -28,15 +30,24 @@ class ConsejosController extends Controller
 
     public function store(Request $request){
         $data = $request->validate([
-            'fecha_consejo' => ['required', 'date'],
+            'fecha_consejo' => ['required', 'date_format:d/m/Y', 'after_or_equal:today'],
             'presidente' => ['required', 'string', 'max:50'],
             'tipo' => ['required', 'string', 'in:Ordinaria,Extraordinaria']
+        ], [
+            'fecha_consejo.after_or_equal'=> 'El campo fecha consejo debe ser una fecha posterior o igual a hoy.'
         ]);
 
+        $puedeCrearConsejo = Consejo::where('estado', '=', 'ENPROCESO')->count() === 0;
+        if($puedeCrearConsejo) {
+            $data['fecha_consejo'] = Carbon::createFromFormat('d/m/Y', $data['fecha_consejo'])->toDateString();
 
-        $consejo = Consejo::create($data);
+            $consejo = Consejo::create($data);
 
-        return redirect('/consejos/'.$consejo->id.'/editar')->with('success', 'Consejo creado.');
+            return redirect('/consejos/'.$consejo->id.'/editar')->with('success', 'Consejo creado.');
+        } else {
+            return back()->with('error', 'Ya existe un consejo en Proceso');
+        }
+        
     }
 
 
@@ -69,6 +80,10 @@ class ConsejosController extends Controller
                     \Notification::route('mail', $estudiante->correoUTA)->notify((new ResolucionCreada($resolucion)));
                 }
                 
+            }
+
+            if($data['estado'] == 'CANCELADO') {
+                Resolucion::where('consejo_id', '=', $consejo->id)->delete();
             }
             return redirect('/consejos/'.$consejo->id.'/editar')->with('success', 'Consejo Actualizado.');
         } else{

@@ -10,7 +10,7 @@
                     @can('ABOGADO')
                         <div class="float-right">
                             <a href="/consejos/nuevo">
-                                <button type="button" class="btn btn-primary">
+                                <button id="boton_nuevo" data-puede="{{$puedeCrearConsejo ? 'true' : 'false' }}" type="button" class="btn btn-primary">
                                     <i class="fas fa-folder-plus"></i> Nueva Consejo
                                 </button>
                             </a>
@@ -26,6 +26,14 @@
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
+                        </div>
+                    @endif
+                    @if(session()->get('error'))
+                        <div class="alert alert-danger">
+                            {{ session()->get('error') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                     @endif
                     
@@ -78,4 +86,34 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal_en_proceso" id="staticBackdrop" data-backdrop="static" data-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel"><strong>No se puede iniciar el consejo</strong></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Ya existe un consejo <strong>"En Proceso"</strong> para crear oto finalizelo o cancelelo.
+            </div>
+            <div class="modal-footer">
+               
+                <button type="button" data-dismiss="modal" id="cancelar" class="btn btn-info">Entendido</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
+
+@push('head')
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
+<!-- Scripts -->
+<script src="{{ asset('js/consejos.js')}}"></script>
+@endpush
