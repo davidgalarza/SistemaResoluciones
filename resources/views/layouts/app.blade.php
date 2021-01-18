@@ -109,6 +109,10 @@
                             <a class="nav-link {{ (request()->is('estudiantes')) ? 'active' : '' }}"
                                 href="/estudiantes">Estudiantes</a>
                         </li>
+                        <li class="nav-item ">
+                            <a class="nav-link {{ (request()->is('configuraciones')) ? 'active' : '' }}"
+                                href="/configuraciones">Configuraion</a>
+                        </li>
                         @endcan
 
                         @can('ABOGADO')
