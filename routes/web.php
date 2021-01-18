@@ -35,5 +35,7 @@ Route::get('/carreras/{id}/editar', 'CarrerasController@editar')->middleware('au
 Route::resource('/usuarios', 'UsuariosController')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::get('/usuarios/nuevo', 'UsuariosController@create')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::get('/estudiantes', 'EstudiantesController@index')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
+Route::get('/configuraciones', 'ConfiguracionesController@editar')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
+Route::post('/configuraciones/actualizar', 'ConfiguracionesController@update')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::post('import-list-excel','EstudiantesController@importExcel')->middleware('auth', 'role:ADMINISTRADOR', 'banned')->name('estudiantes.import.excel');
 

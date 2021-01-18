@@ -9,10 +9,10 @@ use App\Formato;
 use App\Carrera;
 use App\Resolucion;
 use Carbon\Carbon;
+use App\Configuraciones;
 
 class ResolucionesController extends Controller
 {
-
     public  $validConsts = [
         'Nombres Apellidos Estudiante',
         'Cédula Estudiante',
@@ -36,12 +36,15 @@ class ResolucionesController extends Controller
         $formato = Formato::findOrFail($idFormato);
         $estudiante = Estudiante::findOrFail($idEstudiante);
         $carrera = Carrera::findOrFail($estudiante->carrera_id);
+        $periodo = Configuraciones::where('key', '=', 'PERIODO')->first();
+
         return view('resoluciones.formulario', [
             'consejo'=> $consejo,
             'carrera'=> $carrera, 
             'formato'=> $formato,
             'formSchema'=> json_decode($formato['form_schema'], true),
-            'estudiante'=> $estudiante
+            'estudiante'=> $estudiante,
+            'periodo' => $periodo['value']
         ]);
     }
 
@@ -52,6 +55,7 @@ class ResolucionesController extends Controller
         $formato = Formato::findOrFail($resolucion->formato_id);
         $estudiante = Estudiante::findOrFail($resolucion->estudiante_id);
         $carrera = Carrera::findOrFail($estudiante->carrera_id);
+        $periodo = Configuraciones::where('key', '=', 'PERIODO')->first();
 
         return view('resoluciones.editar', [
             'resolucion'=> $resolucion,
@@ -61,6 +65,7 @@ class ResolucionesController extends Controller
             'estudiante' => $estudiante ,
             'formSchema'=> json_decode($formato['form_schema'], true),
             'respuestas'=> json_decode($resolucion['respuestas'], true),
+            'periodo' => $periodo['value']
         ]);
     }
 
@@ -152,7 +157,6 @@ class ResolucionesController extends Controller
         $valoresRemplazar['Anio Resolución'] = $fecha->format('Y');
         // Estudiante
 
-        $valoresRemplazar['Periodo Académico'] = 'ENERO 2021 - JULIO 2021';
         $valoresRemplazar['Presidente Consejo'] = $consejo->presidente;
         
         
@@ -176,7 +180,7 @@ class ResolucionesController extends Controller
                     if($field['type'] != 'date' ){
                         $valoresRemplazar[$field['varText']] = $respuestas[preg_replace('~[ .]~', '_', $field['label'])];
                     } else {
-                        $fecha2 = Carbon::parse($respuestas[preg_replace('~[ .]~', '_', $field['label'])])->timezone('America/Bogota');
+                        $fecha2 = Carbon::createFromFormat('d/m/Y', $respuestas[preg_replace('~[ .]~', '_', $field['label'])])->timezone('America/Bogota');
                         $mes2 = $meses[($fecha2->format('n')) - 1];
                         $valoresRemplazar[$field['varText']] = $mes2. ' ' . $fecha2->format('d'). ', ' . $fecha2->format('Y'); ;
                     }

@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Role;
 use App\User;
+use App\Configuraciones;
 
 class UserSeeder extends Seeder
 {
@@ -40,6 +41,11 @@ class UserSeeder extends Seeder
 
 
         $user->asignarRol($abogadoRole);
+
+        $conf = Configuraciones::create([
+            'key' => 'PERIODO',
+            'value' => 'SEPTIEMPRE 2020 - FEBRERRO 2021',
+        ]);
         
     }
 }

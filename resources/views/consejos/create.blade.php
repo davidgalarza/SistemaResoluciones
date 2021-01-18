@@ -19,13 +19,21 @@
                           </button>
                         </div>
                     @endif
+                    @if(session()->get('error'))
+                        <div class="alert alert-danger">
+                            <strong>{{ session()->get('error') }}</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
 
                     <form method="POST" action="{{ action('ConsejosController@store') }}" enctype="multipart/form-data">
                         @csrf
 
                         
                         <label for="fecha_consejo" class="col-form-label text-md-right">Fecha del consejo</label>
-                        <input id="fecha_consejo" type="date" class="form-control @error('fecha_consejo') is-invalid @enderror" name="fecha_consejo" value="{{ old('fecha_consejo') }}" required  autofocus>
+                        <input id="fecha_consejo" type="text" placeholder="dd/mm/aaaa" class="form-control datefield @error('fecha_consejo') is-invalid @enderror" name="fecha_consejo" value="{{ old('fecha_consejo') }}" required >
                         @error('fecha_consejo')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -70,3 +78,37 @@
     </div>
 </div>
 @endsection
+@push('head')
+<script>
+    window.addEventListener('load', function () {
+        console.log('load');
+        $.datepicker.regional['es'] = {
+            closeText: 'Cerrar',
+            prevText: '< Ant',
+            nextText: 'Sig >',
+            currentText: 'Hoy',
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+            dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+            weekHeader: 'Sm',
+            dateFormat: 'dd/mm/yy',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+        };
+        $.datepicker.setDefaults($.datepicker.regional['es']);
+
+        $(".datefield").attr('readonly', 'readonly').attr('style', 'background-color:white').datepicker({
+            dateFormat: "dd/mm/yy",
+            language: 'es',
+        });
+    });
+        
+</script>
+
+
+    
+@endpush

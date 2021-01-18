@@ -33,7 +33,25 @@ $(document).ready(() => {
         e.preventDefault();//     <--- This line.
         $('#modal_eliminar').modal('show').on('click', '#delete', function(e) {
             $form.trigger('submit');
-        });;
+        });
+    });
+
+    $('#boton_actulizar').on('click', function(e) {
+        var form = $(this).closest('form');
+        let estado = $('#estado').val();
+        console.log(estado);
+        if(estado === 'FINALIZADO') {
+            $('#modal_finalizar').modal('show').on('click', '#finalizar', function(e) {
+                form.trigger('submit');
+            });;
+        }
+
+        if(estado === 'CANCELADO') {
+            $('#modal_cancelado').modal('show').on('click', '#cancelar', function(e) {
+                form.trigger('submit');
+            });;
+        }
+        e.preventDefault();
     });
 
 
