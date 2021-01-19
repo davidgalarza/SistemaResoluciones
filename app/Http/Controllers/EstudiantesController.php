@@ -12,7 +12,14 @@ class EstudiantesController extends Controller
 {
     
     public function index() {
-        return view('estudiantes.index');
+        $estudiantes = Estudiante::all();
+        $carreras = Carrera::all();
+        foreach( $estudiantes as $estu){
+            $carreraNom = $carreras->where('id',$estu->carrera_id)->first();
+            $estu->carrera_id = $carreraNom->nombre;
+        }
+        return view('estudiantes.index',['estudiantess'=>$estudiantes]);
+
     }
 
     public function obtener(Request $request)
