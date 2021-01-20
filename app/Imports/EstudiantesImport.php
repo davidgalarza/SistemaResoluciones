@@ -21,7 +21,7 @@ class EstudiantesImport implements ToModel
             $estudiante->update([
                 'apellidos'=> $row[1],
                 'nombres'=> $row[2],
-                'telefono'=> $row[7],
+                'telefono'=> $row[8],
                 'correo'=> $row[9],
                 'correoUTA'=> $row[10],
                 'folio'=> $row[18],
@@ -36,7 +36,7 @@ class EstudiantesImport implements ToModel
                 
                 'apellidos'=> $row[1],
                 'nombres'=> $row[2],
-                'telefono'=> $row[7],
+                'telefono'=> $row[8],
                 'correo'=> $row[9],
                 'correoUTA'=> $row[10],
                 'folio'=> $row[18],
