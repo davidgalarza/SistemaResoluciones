@@ -16,7 +16,17 @@ class CheckRole
     public function handle($request, Closure $next, $role)
     {
 
-        if (!$request->user()->tieneRol($role)) {
+        $roles = explode("|", $role);
+        $puedeAcceder = false;
+
+        
+        foreach ($roles as $role) {
+            if(!$puedeAcceder){
+                $puedeAcceder = $request->user()->tieneRol($role);
+            }
+        }
+
+        if (!$puedeAcceder) {
             return abort(403, 'No tienes autorización para ingresar.');
         }
         return $next($request);
