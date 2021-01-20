@@ -72,7 +72,7 @@
                                         {{ old('tipo') == 'Ordinaria' || $consejo->tipo == 'Ordinaria' ? 'selected' : ''}}>
                                         Ordinaria</option>
                                     <option value="Extraordinaria"
-                                        {{ old('tipo') == 'Extraordinaria' || $consejo->tipo == 'EXTRAORDINARIA' ? 'selected' : ''}}>
+                                        {{ old('tipo') == 'Extraordinaria' || $consejo->tipo == 'Extraordinaria' ? 'selected' : ''}}>
                                         Extraordinaria</option>
 
                                 </select>
@@ -104,6 +104,11 @@
                                 </p>
                             </div>
 
+                            <div class="col-12">
+                                <a class="btn btn-warning" href="/consejos/{{$consejo->id}}/acta">
+                                    Descargar Acta
+                                </a>
+                            </div>
                             @endif
 
 
@@ -145,7 +150,7 @@
                                 <th scope="col">Tipo</th>
                                 <th scope="col">Estudiante</th>
                                 <th style="width: 15%" scope="col">Carrera</th>
-                                <th scope="col">Descargar</th>
+                                <th scope="col">Accion</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -168,6 +173,8 @@
                                                 d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
                                         </svg>
                                     </a>
+
+                                    @if ($consejo->estado == 'ENPROCESO')
                                     <a href="/resoluciones/{{$resolucion->id}}/editar" class="btn btn-info">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -193,6 +200,7 @@
                                         </button>
                                     </form>
 
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach

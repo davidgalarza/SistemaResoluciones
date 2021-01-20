@@ -27,7 +27,8 @@ class ResolucionesController extends Controller
         'Anio Resolución',
         'Presidente Consejo',
         'Número Resolución',
-        'Tipo Sesión'
+        'Tipo Sesión',
+        'Fecha Consejo'
     ];
 
     public function formulario(Request $request, $idConsejo, $idFormato, $idEstudiante){
@@ -94,6 +95,7 @@ class ResolucionesController extends Controller
         } else {
             $ultimoNumeroResolucion = 0;
         }
+        
         $resolucion = Resolucion::create([
             'usuario_id' => auth()->user()->id,
             'estudiante_id' => $data['id_estudiante'],
@@ -119,7 +121,6 @@ class ResolucionesController extends Controller
             'formato_id' => $data['id_formato'],
             'respuestas' => json_encode($data),
             'consejo_id' => $data['id_consejo'],
-            'nummero_resolucion' => null,
         ]);
 
         $resolucion->save();
@@ -146,14 +147,22 @@ class ResolucionesController extends Controller
                 $valoresRemplazar[$cosnt] = $respuestas[$constT];
             }
         }
-
+        Carbon::setUTF8(true);
+        Carbon::setLocale(config('app.locale'));
+        setlocale(LC_ALL, 'es_MX', 'es', 'ES', 'es_MX.utf8');
         $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+        $dias = array("lunes","martes","miércoles","jueves","viernes","sábado","domingo");
         $fecha = Carbon::parse($resolucion->created_at)->timezone('America/Bogota');
         $mes = $meses[($fecha->format('n')) - 1];
+
+        $fechaConsejo = Carbon::parse($consejo->fecha_consejo);
+        $mesConsejo = $meses[($fecha->format('n')) - 1];
+        $diaConsejo = $dias[($fechaConsejo->dayOfWeek) - 1];
 
         $valoresRemplazar['Tipo Sesión'] = $consejo->tipo;
         $valoresRemplazar['Número Resolución'] = $resolucion->nummero_resolucion;
         $valoresRemplazar['Fecha Resolución'] = $fecha->format('d') . ' de ' . $mes . ' de ' . $fecha->format('Y');
+        $valoresRemplazar['Fecha Consejo'] = $diaConsejo. ' ' . $fechaConsejo->format('d').  ' de ' . $mesConsejo . ' de ' . $fechaConsejo->format('Y');
         $valoresRemplazar['Anio Resolución'] = $fecha->format('Y');
         // Estudiante
 
@@ -172,20 +181,31 @@ class ResolucionesController extends Controller
                         if(array_key_exists(preg_replace('~[ .]~', '_', $field['label']),$respuestas )){
                             $res = $respuestas[preg_replace('~[ .]~', '_', $field['label'])];
                             $valoresRemplazar[$value['varText']] =  strpos($res, $value['value']) !== false ?  '☒': '☐';
+                            $valoresRemplazar[$field['label']] =  strpos($res, $value['value']) !== false ?  '☒': '☐';
                         } else{
                             $valoresRemplazar[$value['varText']] = '☐';
+                            $valoresRemplazar[$field['label']] = '☐';
                         }
                     }
-                } else if(array_key_exists(preg_replace('~[ .]~', '_', $field['label']),$respuestas )){
+                } else if($field['type'] == 'tabla'){
+                    $tabla = $this->generateDOC('<body>'.$respuestas[preg_replace('~[ .]~', '_', $field['label'])].'</body>');
+
+                    $templateProcessor->replaceXmlBlock($field['varText'], $tabla);
+                }
+                else if(array_key_exists(preg_replace('~[ .]~', '_', $field['label']),$respuestas )){
                     if($field['type'] != 'date' ){
                         $valoresRemplazar[$field['varText']] = $respuestas[preg_replace('~[ .]~', '_', $field['label'])];
-                    } else {
+                        $valoresRemplazar[$field['label']] = $respuestas[preg_replace('~[ .]~', '_', $field['label'])];
+                    } 
+                    else {
                         $fecha2 = Carbon::createFromFormat('d/m/Y', $respuestas[preg_replace('~[ .]~', '_', $field['label'])])->timezone('America/Bogota');
                         $mes2 = $meses[($fecha2->format('n')) - 1];
-                        $valoresRemplazar[$field['varText']] = $mes2. ' ' . $fecha2->format('d'). ', ' . $fecha2->format('Y'); ;
+                        $valoresRemplazar[$field['varText']] = $mes2. ' ' . $fecha2->format('d'). ', ' . $fecha2->format('Y');
+                        $valoresRemplazar[$field['label']] = $mes2. ' ' . $fecha2->format('d'). ', ' . $fecha2->format('Y'); ;
                     }
                 } else{
                     $valoresRemplazar[$field['varText']] = '';
+                    $valoresRemplazar[$field['label']] = '';
                 }
                 
             }
@@ -193,10 +213,17 @@ class ResolucionesController extends Controller
         }
 
         $templateProcessor->setValues($valoresRemplazar);
+        $templateProcessor->setValue('contenido', '');
+        $templateProcessor->setValue('/contenido', '');
+
+
+        
+
+
 
        
 
-        $fileName = $resolucion->id.'.docx';
+        $fileName = 'Resolución '. $resolucion->nummero_resolucion.'-P-CD-FISEI-UTA-'.$fecha->format('Y').'.docx';
         $headers = [
             'Cache-Control' => 'public',
             'Content-Description' => 'Content-Disposition',
@@ -204,10 +231,24 @@ class ResolucionesController extends Controller
             'Content-Transfer-Encoding' => 'binary'
         ];
 
+
         return \Response::download($templateProcessor->save("h.doc"), $fileName,$headers);
         
 
-
+        
     }
 
+    public function generateDOC($html)
+    {
+        $objPHPWord = new \PhpOffice\PhpWord\PhpWord();
+        
+
+        $section = $objPHPWord->addSection();
+        \PhpOffice\PhpWord\Shared\Html::addHtml($section, $html, true);
+        $objPHPWord->setDefaultFontSize(8);
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($objPHPWord, 'Word2007');
+        $fullxml = $objWriter->getWriterPart('Document')->write();
+        $tablexml = preg_replace('/^[\s\S]*(<w:tbl\b.*<\/w:tbl>).*/', '$1', $fullxml);
+        return $tablexml;
+    }
 }

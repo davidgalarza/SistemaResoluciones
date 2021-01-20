@@ -15,7 +15,8 @@ class CheckRole
      */
     public function handle($request, Closure $next, $role)
     {
-        if (! $request->user()->tieneRol($role)) {
+
+        if (!$request->user()->tieneRol($role)) {
             return abort(403, 'No tienes autorización para ingresar.');
         }
         return $next($request);

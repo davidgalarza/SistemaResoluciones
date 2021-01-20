@@ -77,18 +77,13 @@ $(document).ready(() => {
     $('#tipo_resolucion').change(function () {
         let idFormato = $('#tipo_resolucion').val();
 
-        console.log({
-            idFormato,
-            idConsejo,
-            idEstudiante
-        });
         $('#contenedor_formulario').html(`
-        <iframe id="inlineFrameExample"
-            title="Inline Frame Example"
-            frameborder="0" scrolling="auto" class="iframe-full-height"
-            width="100%"
-            src="http://sistemaresoluciones.test/resoluciones/${idConsejo}/${idFormato}/${idEstudiante}/formulario">
-        </iframe>
+            <iframe id="inlineFrameExample"
+                title="Inline Frame Example"
+                frameborder="0" scrolling="auto" class="iframe-full-height"
+                width="100%"
+                src="http://sistemaresoluciones.test/resoluciones/${idConsejo}/${idFormato}/${idEstudiante}/formulario">
+            </iframe>
 
         `)
         $('iframe').on('load', function () {
@@ -101,8 +96,12 @@ $(document).ready(() => {
                 $('#contenedor_mensaje_modal').html(mensaje_resoluion_exitosa);
                 $('#contenedor_mensaje_modal').show(600);
             }
-            $('iframe').height($('iframe').contents().height());
-        });
+                $('iframe').height(parseInt($('iframe').contents().height()) + 100);
+           $('iframe').resize(() =>{
+                $('iframe').height(parseInt($('iframe').contents().height()) + 100 );
+                console.log('RESIZE: ' + $('iframe').contents().height());
+            });
+        })
     });
 
 
