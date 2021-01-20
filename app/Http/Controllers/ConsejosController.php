@@ -122,7 +122,7 @@ class ConsejosController extends Controller
         $consejo = Consejo::findOrFail($id);
         $formatos = Formato::where('estado', 'PUBLICO')->get();
         $resoluciones= Resolucion::where('consejo_id', $id)->where('respuestas', 'like', '%' . $q . '%')
-        ->orderBy('created_at', 'desc')->paginate(7);
+        ->orderBy('nummero_resolucion', 'desc')->paginate(7);
 
         
         return view('consejos.edit', [
