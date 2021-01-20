@@ -15,7 +15,8 @@ class DocumentoJSON extends Controller
         
 
         foreach($phpWord->getVariables() as $var){
-            $varText = trim($var);
+            $varText = trim(preg_replace('~\x{00a0}~siu',' ',$var), "\xC2\xA0\n");
+
             if(DocumentoJSON::startsWith($varText,'[' ) && DocumentoJSON::endsWith($varText,']')){
                 // Section title
                 $title = str_replace('[', '', $varText); 
@@ -95,6 +96,8 @@ class DocumentoJSON extends Controller
                ksort($formSchema[$key]['fields']);
             }
         }
+
+
 
         return $formSchema;
     }
