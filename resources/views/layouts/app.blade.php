@@ -122,6 +122,13 @@
                             </li>
                         @endcan
 
+                        @can('AYUDANTE')
+                            <li class="nav-item ">
+                                <a class="nav-link {{ (request()->is('consejos')) ? 'active' : '' }}"
+                                    href="/consejos">Consejos</a>
+                            </li>
+                        @endcan
+
                         <!-- Authentication Links -->
                         @guest
                         <li class="nav-item">

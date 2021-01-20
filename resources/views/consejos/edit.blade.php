@@ -23,12 +23,12 @@
                     </div>
                     @endif
                     @if(session()->get('error'))
-                        <div class="alert alert-danger">
-                            {{ session()->get('error') }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+                    <div class="alert alert-danger">
+                        {{ session()->get('error') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     @endif
                     <form method="POST" action="{{  url('/consejos/'.$consejo->id) }}" enctype="multipart/form-data">
                         @csrf
@@ -36,6 +36,7 @@
 
                         <div class="row">
 
+                            @can('ABOGADO')
                             @if ($consejo->estado == 'ENPROCESO')
                             <div class="col-md-12">
                                 <label for="presidente" class="col-form-label text-md-right">Presidente</label>
@@ -111,6 +112,7 @@
                             </div>
                             @endif
 
+                            @endcan
 
                         </div>
 
@@ -386,9 +388,11 @@
         overflow: scroll;
         -webkit-overflow-scrolling: touch;
     }
+
     .btn {
         font-weight: bolder;
     }
+
     #contenedor_formulario {}
 
     .bootstrap-select {
