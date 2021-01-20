@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="float-left">Editar Configuracioines</h3>                                
+                    <h3 class="float-left">Editar Configuraciones</h3>                                
                 </div>
 
                 <div class="card-body">

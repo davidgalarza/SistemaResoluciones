@@ -60,7 +60,7 @@ $(function() {
                         @endif
                         
                         <div class="mb-3">
-                        <label class="form-label">Agrege el archivo Excel(.xlsx) de estudiantes</label>
+                        <label class="form-label">Agrege el archivo Excel(.xlsx .xls) de estudiantes</label>
                         <input style="padding: 0;height: auto;" class="form-control" type="file"  name="file" >
                         @error('file')
                            <span class="invalid-feedback" style="display: block" role="alert">

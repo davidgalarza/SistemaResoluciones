@@ -17,7 +17,7 @@
                 <div class="card-body">
 
                     @can('ADMINISTRADOR')
-                        <h1 style="text-align:center;">ESTADISTICAS RESOLUCIONES</h1>
+                        <h1 style="text-align:center;">ESTADÍSTICAS RESOLUCIONES</h1>
                         <div class="row">
                         @if ((count($carreras)>0) && (count($formatoInicial)>0))
                         <div class="col-md-6">
@@ -41,7 +41,7 @@
                         
                         <div style="padding-top: 50px;">
                         <div style="display: flex; justify-content: center; ">
-                            <div id="cargador" style="position: absolute; " class="loader" >Loading...</div>
+                            <div id="cargador" style="position: absolute; " class="loader" >Cargando...</div>
                         </div>
 
                         <div id="chart_wrap">
