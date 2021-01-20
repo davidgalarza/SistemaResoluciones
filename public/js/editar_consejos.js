@@ -185,8 +185,6 @@ function buscarEstudiante() {
                 </div>
             `);
 
-            $('.selectpicker').prop('disabled', false);
-            $('.selectpicker').selectpicker('refresh');
             $('#tipo_resolucion').children().each(function () {
                 if (idCarrera != $(this).data('carrera')) {
                     $(this).hide();
@@ -194,6 +192,13 @@ function buscarEstudiante() {
                     $(this).show();
                 }
 
+            });
+
+            $('.selectpicker').prop('disabled', false);
+            $('.selectpicker').selectpicker('refresh');
+            $('a[role="option"]').click(() =>{
+                cargasIframe =0;
+                console.log('CLICK');
             });
 
 
