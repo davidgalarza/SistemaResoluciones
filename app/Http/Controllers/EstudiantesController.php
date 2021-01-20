@@ -37,6 +37,16 @@ class EstudiantesController extends Controller
         return json_encode($datos) ;
     }
 
+    public function getEstudiante(Request $request, $cedula)
+    {
+        $estudiante = Estudiante::where('cedula', $cedula)->firstOrFail();
+        $carrera = Carrera::findOrFail($estudiante->carrera_id);
+        $datos = $estudiante->toArray();
+        $datos['carreraNombre'] = $carrera->nombre;
+
+        return json_encode($datos) ;
+    }
+
     public function importExcel(Request $request){
       
         $request->validate([
