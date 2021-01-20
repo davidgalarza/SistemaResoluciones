@@ -82,7 +82,7 @@ $(document).ready(() => {
                 title="Inline Frame Example"
                 frameborder="0" scrolling="auto" class="iframe-full-height"
                 width="100%"
-                src="http://sistemaresoluciones.test/resoluciones/${idConsejo}/${idFormato}/${idEstudiante}/formulario">
+                src="/resoluciones/${idConsejo}/${idFormato}/${idEstudiante}/formulario">
             </iframe>
 
         `)

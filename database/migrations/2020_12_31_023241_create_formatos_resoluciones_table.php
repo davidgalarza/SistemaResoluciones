@@ -20,7 +20,7 @@ class CreateFormatosResolucionesTable extends Migration
 
             $table->string('descripcion');
 
-            $table->string('estado')->default('ACTIVO');
+            $table->string('estado')->default('BORRADOR');
 
             $table->string('ubicacion_plantilla')->nullable();;
 
