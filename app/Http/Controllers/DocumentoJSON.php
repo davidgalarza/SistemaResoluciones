@@ -53,7 +53,7 @@ class DocumentoJSON extends Controller
                     $fieldOpV = explode(',', $fieldTypeInfo[1]);
 
                     $fieldInfo = array('label' => $fieldName, 'type' => $fieldType);
-                    $fieldInfo[$fieldInfo['type'] == 'select' ? 'options' : 'values'] = array_map('trim', $fieldOpV);
+                    $fieldInfo[$fieldInfo['type'] == 'select' ? 'options' : $fieldInfo['type'] == 'tabla' ? 'headers' : 'values'] = array_map('trim', $fieldOpV);
 
                 } else if(count(explode('|', $fieldType)) > 1){
                     $datos = explode('|', $fieldType);
@@ -134,6 +134,7 @@ class DocumentoJSON extends Controller
             case 'cédula': return 'cédula';
             case 'ruc': return 'ruc';
             case 'año': return 'año';
+            case 'tabla': return 'tabla';
             default: 'texto';
         }
 

@@ -1,4 +1,5 @@
 window.addEventListener("load", function() {
+    $("#errorEditarTabla").hide();
     console.log("load");
     $.datepicker.regional["es"] = {
         closeText: "Cerrar",
@@ -60,21 +61,26 @@ window.addEventListener("load", function() {
             dateFormat: "dd/mm/yy",
             language: "es"
         });
-        $('.ff').on('input', function(){ 
-            $(this).find(".invalid-feedback").remove();
-          $(this).removeClass("is-invalid");
-        });
+    $(".ff").on("input", function() {
+        $(this)
+            .find(".invalid-feedback")
+            .remove();
+        $(this).removeClass("is-invalid");
+    });
 
-        $('.ff').on('change', function(){ 
-            $(this).find(".invalid-feedback").remove();
-          $(this).removeClass("is-invalid");
-        });
+    $(".ff").on("change", function() {
+        $(this)
+            .find(".invalid-feedback")
+            .remove();
+        $(this).removeClass("is-invalid");
+    });
     $("#boton_enviar").click(e => {
         $(".invalid-feedback").remove();
         $("input").removeClass("is-invalid");
+        console.log("CLICK");
+        e.preventDefault();
 
         let canGoNext = true;
-        
 
         $(".ff").each(function() {
             if ($(this).attr("data-cedula") == "true" && canGoNext) {
@@ -87,8 +93,11 @@ window.addEventListener("load", function() {
             }
 
             if ($(this).hasClass("datefield") && canGoNext) {
+                console.log('FECHAAA');
                 if ($(this).val().length > 0) {
                     canGoNext = validarFecha($(this).val());
+                } else {
+                    canGoNext = false;
                 }
             }
             if (!$(this)[0].checkValidity() && canGoNext) {
@@ -98,9 +107,42 @@ window.addEventListener("load", function() {
 
         if (canGoNext) {
             console.log("BIEN");
-            $(this)
-                .closest("form")
-                .trigger("submit");
+
+            let editando = false;
+
+            $(".tablaContenedor").each(function() {
+                editando = $(this).find(".form-control").length > 0;
+
+                if (!editando) {
+                    $(this)
+                        .find('th[name="bstable-actions"]')
+                        .remove();
+                    $(this)
+                        .find('td[name="bstable-actions"]')
+                        .remove();
+
+                    let tabla = `
+                    <table style="font-size: 8pt; border-width:10px;border-color:black;border-style:solid;">
+                        ${$(this)
+                            .find("table")
+                            .html()}
+                    </table>
+                `;
+
+                    $(this)
+                        .find(".inputTabla")
+                        .first()
+                        .val(tabla);
+
+                    
+                }
+            });
+
+            if (!editando) {
+                $("#template_form").trigger("submit");
+            } else {
+                $("#errorEditarTabla").show();
+            }
         } else {
             console.log("mal");
             e.preventDefault();
@@ -149,7 +191,7 @@ window.addEventListener("load", function() {
                                 );
                         }
                     }
-                }  else if (!$(this)[0].checkValidity()) {
+                } else if (!$(this)[0].checkValidity()) {
                     $(this).addClass("is-invalid");
 
                     $(this)
@@ -378,8 +420,11 @@ function validarFecha(fecha) {
     console.log("VALIDAR FERCHA" + fecha);
     let hoy = new Date();
     let parts = fecha.split("/");
-    let fechaPasada = new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
- 
+    let fechaPasada = new Date(
+        Number(parts[2]),
+        Number(parts[1]) - 1,
+        Number(parts[0])
+    );
 
     let anoPasado = addYears(hoy, -1);
     let anoSiguiente = addYears(hoy, +2);

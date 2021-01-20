@@ -21,6 +21,7 @@ Route::get('/consejos/nuevo', 'ConsejosController@create')->middleware('auth', '
 Route::post('/consejos/crear', 'ConsejosController@store')->middleware('auth', 'role:ABOGADO', 'banned');
 Route::get('/consejos/{consejo}/editar', 'ConsejosController@editar')->middleware('auth', 'role:ABOGADO', 'banned');
 Route::put('/consejos/{consejo}', 'ConsejosController@update')->middleware('auth', 'role:ABOGADO', 'banned');
+Route::get('/consejos/{consejo}/acta', 'ConsejosController@descargarActa')->middleware('auth', 'role:ABOGADO', 'banned');
 Route::get('/estudiantes/obtener', 'EstudiantesController@obtener')->middleware('auth', 'role:ABOGADO', 'banned');
 Route::get('/resoluciones/{id_consejo}/{id_formato}/{id_estudiante}/formulario', 'ResolucionesController@formulario')->middleware('auth', 'role:ABOGADO', 'banned');
 Route::post('/resoluciones/anadir', 'ResolucionesController@anadir')->middleware('auth', 'role:ABOGADO', 'banned');

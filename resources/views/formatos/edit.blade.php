@@ -158,7 +158,7 @@
                     
                     <div class="row">
                         @foreach ($section['fields'] as $field)
-                            <div class="col-md-{{$field['type'] == 'marcar' ? 12 : 6 }}">
+                            <div class="col-md-{{$field['type'] == 'marcar' || $field['type'] == 'tabla' ? 12 : 6 }}">
                                 <div class="form-group">
                                     {!! Form::label($field['label'], $field['label'], array('class' => $field['type'] == 'marcar' ? 'font-weight-bold' : '')) !!}
                                     @if($field['type'] == 'select')
@@ -178,8 +178,22 @@
                                     {!! Form::text($field['label'], (isset($defaultValues[preg_replace('~[ .]~', '_', $field['label'])]) ? $defaultValues[preg_replace('~[ .]~', '_', $field['label'])]:null) ,  array('data-cedula'=>'true','class' => 'form-control ff')) !!}
                                     @elseif($field['type'] == 'anio')
                                     {!! Form::text($field['label'], (isset($defaultValues[preg_replace('~[ .]~', '_', $field['label'])]) ? $defaultValues[preg_replace('~[ .]~', '_', $field['label'])]:null) ,  array('data-año'=>'true','class' => 'form-control ff')) !!}
+                                    @elseif($field['type'] == 'tabla')
+                                        <table class="table" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    @foreach ($field['headers'] as $header)
+                                                        <th>{{$header}}</th>
+                                                    @endforeach
+                                                </tr>
+
+                                                <tbody>
+                                                    
+                                                </tbody>
+                                            </thead>
+                                      </table>
                                     @else
-                                    {!! Form::{$field['type']}($field['label'], null,  array('class' => 'form-control')) !!}
+                                    {!! Form::{$field['type']}($field['label'], isset($field['default']) ? $field['default'] : null,  array('class' => 'form-control')) !!}
                                     @endif
                                 </div>
                             </div>

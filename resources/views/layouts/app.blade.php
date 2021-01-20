@@ -93,33 +93,33 @@
                     <ul class="navbar-nav ml-auto">
 
                         @can('ADMINISTRADOR')
-                        <li class="nav-item ">
-                            <a class="nav-link {{ (request()->is('formatos')) ? 'active' : '' }}"
-                                href="/formatos">Formatos</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link {{ (request()->is('carreras')) ? 'active' : '' }}"
-                                href="/carreras">Carreras</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link {{ (request()->is('usuarios')) ? 'active' : '' }}"
-                                href="/usuarios">Usuarios</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link {{ (request()->is('estudiantes')) ? 'active' : '' }}"
-                                href="/estudiantes">Estudiantes</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link {{ (request()->is('configuraciones')) ? 'active' : '' }}"
-                                href="/configuraciones">Configuraion</a>
-                        </li>
+                            <li class="nav-item ">
+                                <a class="nav-link {{ (request()->is('formatos')) ? 'active' : '' }}"
+                                    href="/formatos">Formatos</a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link {{ (request()->is('carreras')) ? 'active' : '' }}"
+                                    href="/carreras">Carreras</a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link {{ (request()->is('usuarios')) ? 'active' : '' }}"
+                                    href="/usuarios">Usuarios</a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link {{ (request()->is('estudiantes')) ? 'active' : '' }}"
+                                    href="/estudiantes">Estudiantes</a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link {{ (request()->is('configuraciones')) ? 'active' : '' }}"
+                                    href="/configuraciones">Configuraion</a>
+                            </li>
                         @endcan
 
                         @can('ABOGADO')
-                        <li class="nav-item ">
-                            <a class="nav-link {{ (request()->is('consejos')) ? 'active' : '' }}"
-                                href="/consejos">Consejos</a>
-                        </li>
+                            <li class="nav-item ">
+                                <a class="nav-link {{ (request()->is('consejos')) ? 'active' : '' }}"
+                                    href="/consejos">Consejos</a>
+                            </li>
                         @endcan
 
                         <!-- Authentication Links -->
