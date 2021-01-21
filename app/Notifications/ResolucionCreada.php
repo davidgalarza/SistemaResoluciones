@@ -54,9 +54,9 @@ class ResolucionCreada extends Notification implements ShouldQueue
 
         return (new MailMessage)
                     ->subject('Resolución de '. $formato->nombre . ' fue aprobada')
-                    ->line('Por medio del presente, me permito notificar que la resolucion de '.$formato->nombre . ' fue aceptada el '. $fechaString . ' puede retirarla en secrearia de carrera.')
+                    ->line('Por medio del presente, me permito notificar que la resolución de '.$formato->nombre . ' fue aceptada el '. $fechaString . ' puede retirarla en secretaría de carrera.')
                     ->action('Buscar en Redi', url('http://redi.uta.edu.ec/simple-search'))
-                    ->line('Juntos construimos la mejor universidad del pais.');
+                    ->line('Juntos construimos la mejor universidad del país.');
     }
 
     /**

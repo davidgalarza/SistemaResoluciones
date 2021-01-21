@@ -36,7 +36,7 @@ class ConsejosController extends Controller
         $puedeCrearConsejo = Consejo::where('estado', '=', 'ENPROCESO')->count() === 0;
         Carbon::setUTF8(true);
         Carbon::setLocale(config('app.locale'));
-        setlocale(LC_ALL, 'es_MX', 'es', 'ES', 'es_MX.utf8');
+        //setlocale(LC_ALL, 'es_MX', 'es', 'ES', 'es_MX.utf8');
         return view('consejos.index', [
             'consejos' => $consejos,
             'puedeCrearConsejo' => $puedeCrearConsejo
