@@ -21,7 +21,7 @@
                     @endif
                     <div style="height: 1.6em"></div>
                     <div style="display: flow-root;">
-                        <h3 class="float-left">Informacion del formato</h3>
+                        <h3 class="float-left">Información del formato</h3>
 
                     </div>
                     <form method="POST" action="{{  url('/formatos/'.$formato->id) }}" enctype="multipart/form-data">

@@ -111,7 +111,7 @@
                             </li>
                             <li class="nav-item ">
                                 <a class="nav-link {{ (request()->is('configuraciones')) ? 'active' : '' }}"
-                                    href="/configuraciones">Configuraion</a>
+                                    href="/configuraciones">Configuraión</a>
                             </li>
                         @endcan
 
@@ -132,7 +132,7 @@
                         <!-- Authentication Links -->
                         @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">Iniciar sesion</a>
+                            <a class="nav-link" href="{{ route('login') }}">Iniciar sesión</a>
                         </li>
                         @if (Route::has('register'))
                         <li class="nav-item">
@@ -149,7 +149,7 @@
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    Cerrar Sesion
+                                    Cerrar Sesión
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

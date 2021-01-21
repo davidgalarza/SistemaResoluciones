@@ -49,7 +49,7 @@
                             </span>
                         @enderror     
                         
-                        <label for="tipo" class="text-left">Tipo de Sesion</label>
+                        <label for="tipo" class="text-left">Tipo de Sesión</label>
                         <select id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" value="{{ old('tipo') }}" required autocomplete="tipo">
                             <option disabled selected>Seleccionar...</option>
                             

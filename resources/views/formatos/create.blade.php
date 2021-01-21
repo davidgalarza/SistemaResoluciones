@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="float-left">Anadir Formato de resolucion</h3>
+                    <h3 class="float-left">Añadir Formato de resolucion</h3>
                     
                 </div>
 

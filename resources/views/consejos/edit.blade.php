@@ -50,7 +50,7 @@
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label for="estado" class="col-form-label text-md-right">Estadon del consejo</label>
+                                <label for="estado" class="col-form-label text-md-right">Estado del consejo</label>
                                 <select id="estado" class="form-control @error('estado') is-invalid @enderror"
                                     name="estado" value="{{ old('estado') ?? $consejo->estado }}" required>
                                     @if ($consejo->estado == 'ENPROCESO')
@@ -64,7 +64,7 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label for="tipo" class=" col-form-label text-md-right">Tipo de Sesion</label>
+                                <label for="tipo" class=" col-form-label text-md-right">Tipo de Sesión</label>
                                 <select id="tipo" type="text" class="form-control  @error('tipo') is-invalid @enderror"
                                     name="tipo" value="{{ old('tipo') }}" required autocomplete="tipo">
                                     <option disabled selected>Seleccionar...</option>
@@ -148,7 +148,7 @@
                     <table class="table mt-3">
                         <thead>
                             <tr>
-                                <th class="text-center" scope="col">#Resolucion</th>
+                                <th class="text-center" scope="col">#Resolución</th>
                                 <th scope="col">Tipo</th>
                                 <th scope="col">Estudiante</th>
                                 <th style="width: 15%" scope="col">Carrera</th>
@@ -239,7 +239,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Eliminada la resolucion se perderan todos los datos ingresados durante su creacion.
+                Eliminada la resolucion se perderan todos los datos ingresados durante su creación.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -254,7 +254,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel"><strong>¿Seguro de Finaliza el Consejo?</strong></h5>
+                <h5 class="modal-title" id="staticBackdropLabel"><strong>¿Seguro de Finalizar el Consejo?</strong></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -297,7 +297,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Nueva Resolucion</h4>
+                <h4 class="modal-title">Nueva Resolución</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -306,7 +306,7 @@
 
                 <div id="contenedor_mensaje_modal">
                     <div class="alert alert-success" role="alert">
-                        <strong>Resolucion creada exitosamente</strong>
+                        <strong>Resolución creada exitosamente</strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -315,13 +315,13 @@
 
                 <div class="row">
                     <div class="col-md-10">
-                        <label for="cedula" class="col-form-label font-weight-bold text-md-right">Cedula del
+                        <label for="cedula" class="col-form-label font-weight-bold text-md-right">Cédula del
                             estudiante</label>
                         <input id="cedula" type="text" class="form-control @error('cedula') is-invalid @enderror"
                             name="cedula" value="{{ old('cedula') }}" required>
 
                         <span id="error_cedula" class="invalid-feedback" role="alert">
-                            <strong>No se encontro al estudiante</strong>
+                            <strong>No se encontró al estudiante</strong>
                         </span>
 
                     </div>
@@ -353,7 +353,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <label for="tipo_resolucion" class="col-form-label font-weight-bold text-md-right">Tipo de
-                            resolucion</label>
+                            resolución</label>
                         <select id="tipo_resolucion" type="text" class="form-control selectpicker"
                             data-live-search="true" name="tipo_resolucion" data-live-search="true"
                             autocomplete="tipo_resolucion">
