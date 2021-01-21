@@ -70,4 +70,12 @@ class HomeController extends Controller
     public function formatosXid($id){
         return Formato::where('carrera_id','=',$id)->get();
     }
+
+    public function Redireccion()
+    {
+
+        return redirect('/');
+        
+            
+    }
 }

@@ -39,4 +39,4 @@ Route::get('/estudiantes', 'EstudiantesController@index')->middleware('auth', 'r
 Route::get('/configuraciones', 'ConfiguracionesController@editar')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::post('/configuraciones/actualizar', 'ConfiguracionesController@update')->middleware('auth', 'role:ADMINISTRADOR', 'banned');
 Route::post('import-list-excel','EstudiantesController@importExcel')->middleware('auth', 'role:ADMINISTRADOR', 'banned')->name('estudiantes.import.excel');
-
+Route::get('/home', 'HomeController@Redireccion');
