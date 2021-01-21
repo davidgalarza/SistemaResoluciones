@@ -19,3 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/estudiantes/{cedula}', 'EstudiantesController@getEstudiante');
+Route::get('/resoluciones/estudiante/{id}', 'ResolucionesController@getResoluiones');

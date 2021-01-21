@@ -129,6 +129,8 @@ class ResolucionesController extends Controller
         return redirect('/consejos/'.$data['id_consejo'].'/editar')->with('success', 'Resolucion actulizada');
     }
 
+    
+
     public function descargar(Request $request, $id){
         $resolucion = Resolucion::findOrFail($id);
         $consejo = Consejo::findOrFail($resolucion->consejo_id);
@@ -250,5 +252,12 @@ class ResolucionesController extends Controller
         $fullxml = $objWriter->getWriterPart('Document')->write();
         $tablexml = preg_replace('/^[\s\S]*(<w:tbl\b.*<\/w:tbl>).*/', '$1', $fullxml);
         return $tablexml;
+    }
+
+    public function getResoluiones(Request $request, $id){
+        $estudiante = Estudiante::where('cedula', $id)->firstOrFail();
+        $resoluciones = Resolucion::where('estudiante_id', $estudiante->id)->get();
+        $datos = $resoluciones->toArray();
+        return json_encode($datos);
     }
 }
