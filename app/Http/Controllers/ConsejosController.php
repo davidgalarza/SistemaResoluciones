@@ -10,6 +10,7 @@ use App\Estudiante;
 use Carbon\Carbon;
 use App\Carrera;
 use App\Notifications\ResolucionCreada;
+use Illuminate\Support\Facades\Http;
 
 class ConsejosController extends Controller
 {
@@ -92,13 +93,22 @@ class ConsejosController extends Controller
 
                 $resoluciones = Resolucion::where('consejo_id', '=', $consejo->id)->get();
 
+                $cedulas = array();
+
                 foreach ($resoluciones as $resolucion) {
-
+                    
                     $estudiante = Estudiante::find($resolucion->estudiante_id);
-
+                    $cedulas[] = $estudiante->cedula;
                     \Notification::route('mail', $estudiante->correoUTA)->notify((new ResolucionCreada($resolucion)));
                 }
-                
+
+                $cedulasMandar = implode(",", $cedulas);
+                try{
+                    $response = Http::get('https://us-central1-sistemaresoluciones-d281b.cloudfunctions.net/notificaciones?cedulas='.$cedulasMandar);
+                } catch(Exception  $e){
+                    
+                }
+               
             }
 
             if($data['estado'] == 'CANCELADO') {
