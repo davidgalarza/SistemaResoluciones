@@ -51,6 +51,11 @@ $(document).ready(() => {
                 form.trigger('submit');
             });;
         }
+        if(estado === 'ENPROCESO') {
+            
+            form.trigger('submit');
+           
+        }
         e.preventDefault();
     });
 
