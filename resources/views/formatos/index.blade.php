@@ -64,7 +64,7 @@
                                         <h5 class="font-weight-bold">{{$formato->nombre}}</h5>
                                     </div>
                                     <p class="">{{$formato->descripcion}}</p>
-                                    <p class=""><span class="font-weight-bold">Ultima actulización: </span>{{$formato->updated_at}}</p>
+                                    <p class=""><span class="font-weight-bold">Última actualización: </span>{{$formato->updated_at}}</p>
                                 </div>
 
                                 <div  style="flex: 0" class="col align-self-center">

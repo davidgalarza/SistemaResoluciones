@@ -75,7 +75,7 @@ class FormatosController extends Controller
         $formato->estado = $data['estado'];
         $formato->save();
 
-        return redirect('/formatos/'.$formato->id.'/editar')->with('success', 'Informacion actulizada');
+        return redirect('/formatos/'.$formato->id.'/editar')->with('success', 'Información actualizada');
     }
 
 

@@ -81,7 +81,7 @@ class ResolucionesController extends Controller
         }
         $resolucion->delete();
 
-        return redirect('/consejos/'.$resolucion->consejo_id.'/editar')->with('success', 'Resolucion eliminada');
+        return redirect('/consejos/'.$resolucion->consejo_id.'/editar')->with('success', 'Resolución eliminada');
     }
 
     public function anadir(Request $request){
@@ -126,7 +126,7 @@ class ResolucionesController extends Controller
         $resolucion->save();
 
 
-        return redirect('/consejos/'.$data['id_consejo'].'/editar')->with('success', 'Resolucion actulizada');
+        return redirect('/consejos/'.$data['id_consejo'].'/editar')->with('success', 'Resolución actualizada');
     }
 
     

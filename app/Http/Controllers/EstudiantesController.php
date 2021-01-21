@@ -57,7 +57,7 @@ class EstudiantesController extends Controller
             Excel::import(new EstudiantesImport,$file);
             return back()->with('mensaje','El listado ha sido registrado correctamente!!');
         } catch(\Exception $e){
-            $men="Error: Registro Estudiante no es valido";
+            $men="Error: Registro Estudiante no es válido";
             if($e->getMessage()=="No query results for model [App\Carrera]."){
                $men="Error: No se encontro una carrera especificada";
             }

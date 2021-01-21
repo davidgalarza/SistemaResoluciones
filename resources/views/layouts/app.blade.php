@@ -111,7 +111,7 @@
                             </li>
                             <li class="nav-item ">
                                 <a class="nav-link {{ (request()->is('configuraciones')) ? 'active' : '' }}"
-                                    href="/configuraciones">Configuraión</a>
+                                    href="/configuraciones">Configuración</a>
                             </li>
                         @endcan
 
